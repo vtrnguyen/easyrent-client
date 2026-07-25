@@ -1,6 +1,7 @@
 "use client";
 
-import Sidebar from "./sidebar";
+import { AccountRole } from "@/common/enums/appEnums";
+import AuthGuard from "../guards/auth-guard";
 import Header from "./header";
 
 interface TenantLayoutProps {
@@ -9,9 +10,7 @@ interface TenantLayoutProps {
 
 export default function TenantLayout({ children }: TenantLayoutProps) {
     return (
-        <div className="flex">
-            <Sidebar />
-
+        <AuthGuard allowedRoles={[AccountRole.Tenant]}>
             <div className="flex-1">
                 <Header />
 
@@ -19,6 +18,6 @@ export default function TenantLayout({ children }: TenantLayoutProps) {
                     {children}
                 </main>
             </div>
-        </div>
+        </AuthGuard>
     );
 }

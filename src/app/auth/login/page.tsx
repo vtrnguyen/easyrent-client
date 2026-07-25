@@ -5,8 +5,8 @@ import { FiLock, FiMail } from "react-icons/fi";
 
 import { authApi } from "@/api/auth.api";
 import { authStorage, getHomeRoute } from "@/common/helpers/helper";
-import Button from "@/shared/components/forms/button";
-import TextField from "@/shared/components/forms/text-field";
+import Button from "@/shared/components/buttons/button";
+import TextField from "@/shared/components/text-field/text-field";
 import { useAuthStore } from "@/stores/auth.store";
 import { loginSchema, LoginSchema } from "@/validations/auth.schema";
 import { zodResolver } from "@hookform/resolvers/zod";

@@ -1,6 +1,7 @@
 import { AccountRole } from "@/common/enums/appEnums";
 import AuthGuard from "@/shared/guards/auth-guard";
-import AdminLayout from "@/shared/layouts/admin-layout";
+import Header from "@/shared/layouts/header";
+import Sidebar from "@/shared/layouts/sidebar";
 
 interface LayoutProps {
     children: React.ReactNode;
@@ -9,9 +10,19 @@ interface LayoutProps {
 export default function Layout({ children }: LayoutProps) {
     return (
         <AuthGuard allowedRoles={[AccountRole.Admin]}>
-            <AdminLayout>
-                {children}
-            </AdminLayout>
+            <div className="h-screen flex flex-col overflow-hidden">
+                <Header />
+
+                <div className="flex flex-1 overflow-hidden">
+                    <aside className="shrink-0">
+                        <Sidebar />
+                    </aside>
+
+                    <main className="flex-1 overflow-y-auto p-6">
+                        {children}
+                    </main>
+                </div>
+            </div>
         </AuthGuard>
     );
 }
