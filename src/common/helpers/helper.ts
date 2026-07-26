@@ -84,7 +84,7 @@ export function cn(...inputs: ClassValue[]) {
 export function getRoleValue(role: Roles): string {
     switch (role) {
         case Roles.Admin:
-            return 'Admin';
+            return 'Quản trị viên';
         case Roles.Landlord:
             return 'Người cho thuê';
         case Roles.Tenant:

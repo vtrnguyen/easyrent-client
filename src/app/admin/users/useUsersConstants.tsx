@@ -1,7 +1,8 @@
 'use client';
 
-import { Roles } from '@/common/constants/appConstants';
+import { AccountStatus, Roles } from '@/common/constants/appConstants';
 import { formatDate, getRoleValue, getStatusValue } from '@/common/helpers/helper';
+import Badge from '@/shared/components/badge/badge';
 import { TableColumn } from '@/shared/components/table/table';
 import { FilterConfig } from '@/types/filter';
 import { User } from '@/types/user';
@@ -41,6 +42,33 @@ export const useUsersConstants = () => {
         },
     ];
 
+    const getRoleBadge = (role: Roles) => {
+        switch (role) {
+            case Roles.Admin:
+                return <Badge variant="danger">{getRoleValue(role)}</Badge>;
+
+            case Roles.Landlord:
+                return <Badge variant="info">{getRoleValue(role)}</Badge>;
+
+            case Roles.Tenant:
+                return <Badge variant="success">{getRoleValue(role)}</Badge>;
+
+            default:
+                return null;
+        }
+    };
+
+    const getStatusBadge = (status: AccountStatus) => {
+        switch (status) {
+            case AccountStatus.Active:
+                return <Badge variant={'success'}>{getStatusValue(status)}</Badge>;
+            case AccountStatus.Inactive:
+                return <Badge variant={'danger'}>{getStatusValue(status)}</Badge>;
+            default:
+                return null;
+        }
+    };
+
     const columns: TableColumn<User>[] = [
         {
             fieldId: 'full_name',
@@ -63,20 +91,19 @@ export const useUsersConstants = () => {
             fieldId: 'role',
             header: 'Vai trò',
             sortable: true,
-            renderCell: (user) => getRoleValue(user.role),
+            renderCell: (user) => getRoleBadge(user.role),
         },
         {
             fieldId: 'status',
             header: 'Trạng thái',
             sortable: true,
-            renderCell: (user) => getStatusValue(user.status),
+            renderCell: (user) => getStatusBadge(user.status),
         },
         {
             fieldId: 'last_login_at',
             header: 'Lần đăng nhập cuối',
             sortable: true,
-            renderCell: (user) =>
-                formatDate(user.lastLoginAt, 'Chưa đăng nhập'),
+            renderCell: (user) => formatDate(user.lastLoginAt, 'Chưa đăng nhập'),
         },
     ];
 
