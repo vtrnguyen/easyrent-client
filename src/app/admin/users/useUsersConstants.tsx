@@ -22,23 +22,49 @@ export const useUsersConstants = () => {
             placeholder: 'Nhập email',
         },
         {
+            key: 'phone_number',
+            label: 'Số điện thoại',
+            type: 'text',
+            placeholder: 'Nhập số điện thoại',
+        },
+        {
             key: 'role',
             label: 'Vai trò',
             type: 'select',
             options: [
                 {
-                    label: 'Admin',
+                    label: getRoleValue(Roles.Admin),
                     value: Roles.Admin,
                 },
                 {
-                    label: 'Chủ trọ',
+                    label: getRoleValue(Roles.Landlord),
                     value: Roles.Landlord,
                 },
                 {
-                    label: 'Người thuê',
+                    label: getRoleValue(Roles.Tenant),
                     value: Roles.Tenant,
                 },
             ],
+        },
+        {
+            key: 'status',
+            label: 'Trạng thái tài khoản',
+            type: 'select',
+            options: [
+                {
+                    label: getStatusValue(AccountStatus.Active),
+                    value: AccountStatus.Active,
+                },
+                {
+                    label: getStatusValue(AccountStatus.Inactive),
+                    value: AccountStatus.Inactive,
+                },
+            ],
+        },
+        {
+            key: 'last_login_at',
+            label: 'Lần đăng nhập cuối',
+            type: 'date',
         },
     ];
 

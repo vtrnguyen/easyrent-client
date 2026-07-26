@@ -13,6 +13,9 @@ import { User, UserSearchFilter, UserSearchSort } from '@/types/user';
 import { FilterLogics, paginatedLimit, SearchOperator } from '@/common/constants/appConstants';
 import FilterSettings from '@/shared/components/filter-settings/filter-settings';
 import { useUsersConstants } from './useUsersConstants';
+import { FilterCondition } from '@/types/filter';
+import Badge from '@/shared/components/badge/badge';
+import { getFilterDisplayValue } from '@/common/helpers/helper';
 
 export default function AdminUsersPage() {
     const [users, setUsers] = useState<User[]>([]);
@@ -24,6 +27,9 @@ export default function AdminUsersPage() {
 
     const [total, setTotal] = useState(0);
     const [filters, setFilters] = useState<UserSearchFilter[]>([]);
+    const [searchConditions, setSearchConditions] = useState<FilterCondition[]>([]);
+    const [draftConditions, setDraftConditions] = useState<FilterCondition[]>([]);
+    const [filterLogic, setFilterLogic] = useState<FilterLogics>(FilterLogics.And);
     const [sort, setSort] = useState<UserSearchSort[]>([]);
     const [selectedIds, setSelectedIds] = useState<string[]>([]);
 
@@ -37,7 +43,7 @@ export default function AdminUsersPage() {
                 const response = await userApi.search({
                     page,
                     limit: paginatedLimit,
-                    filter_logic: FilterLogics.And,
+                    filter_logic: filterLogic,
                     filters,
                     sorts: sort,
                 });
@@ -58,16 +64,35 @@ export default function AdminUsersPage() {
         return () => {
             cancelled = true;
         };
-    }, [page, filters, sort]);
+    }, [page, filters, sort, filterLogic]);
 
     return (
         <section className="space-y-4">
             <div className="flex items-center justify-between">
                 <h1 className="text-2xl font-semibold text-slate-900">Quản lý người dùng</h1>
 
-                <Button variant="blue" icon={<FiSearch />} onClick={() => setIsOpenFilterSettings(true)}>
-                    Tìm kiếm
-                </Button>
+                <div className="flex flex-wrap items-center justify-end gap-2">
+                    {searchConditions.map((condition) => {
+                        const filter = userFilters.find((x) => x.key === condition.key);
+
+                        return (
+                            <Badge key={condition.key} variant="info">
+                                {filter?.label}: {getFilterDisplayValue(condition.key, condition.value)}
+                            </Badge>
+                        );
+                    })}
+
+                    <Button
+                        variant="blue"
+                        icon={<FiSearch />}
+                        onClick={() => {
+                            setDraftConditions(searchConditions);
+                            setIsOpenFilterSettings(true);
+                        }}
+                    >
+                        Tìm kiếm
+                    </Button>
+                </div>
             </div>
 
             <div className="flex items-center gap-2">
@@ -107,11 +132,18 @@ export default function AdminUsersPage() {
 
             {isOpenFilterSettings && (
                 <FilterSettings
+                    key={JSON.stringify(draftConditions)}
                     open={isOpenFilterSettings}
                     onClose={() => setIsOpenFilterSettings(false)}
                     filters={userFilters}
-                    onSearch={(conditions) => {
+                    value={draftConditions}
+                    filterLogic={filterLogic}
+                    onSearch={(conditions, logic) => {
                         setPage(1);
+                        setDraftConditions(conditions);
+                        setSearchConditions(conditions);
+                        setFilterLogic(logic);
+
                         setFilters(
                             conditions.map((item) => ({
                                 field: item.key,

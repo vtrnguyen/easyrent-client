@@ -10,6 +10,7 @@ interface DialogProps {
     children: ReactNode;
     width?: string;
     className?: string;
+    contentClassName?: string;
     overlayClassName?: string;
     closeOnOverlayClick?: boolean;
 }
@@ -20,6 +21,7 @@ export default function Dialog({
     children,
     width = 'max-w-lg',
     className,
+    contentClassName,
     overlayClassName,
     closeOnOverlayClick = false,
 }: DialogProps) {
@@ -95,7 +97,7 @@ export default function Dialog({
                 } ${className ?? ''}`}
                 onClick={(e) => e.stopPropagation()}
             >
-                {children}
+                <div className={contentClassName}>{children}</div>
             </div>
         </div>,
         document.body,

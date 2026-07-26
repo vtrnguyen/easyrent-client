@@ -2,6 +2,13 @@ import { SelectOption } from '@/shared/components/select/select';
 
 export type FilterType = 'text' | 'textarea' | 'select' | 'date';
 
+export type DateRangeValue = {
+    from?: string;
+    to?: string;
+};
+
+export type FilterValue = string | number | boolean | DateRangeValue;
+
 export interface FilterConfig {
     key: string;
     label: string;
@@ -12,5 +19,5 @@ export interface FilterConfig {
 
 export interface FilterCondition {
     key: string;
-    value: any;
+    value: FilterValue;
 }

@@ -2,11 +2,12 @@ import snakeCase from 'lodash.snakecase';
 import camelCase from 'lodash.camelcase';
 
 import { AuthData } from '@/types/auth';
-import { AccountStatus, appRoutes, localStorageKeys, Roles } from '../constants/appConstants';
+import { AccountStatus, appRoutes, Genders, localStorageKeys, Roles } from '../constants/appConstants';
 import { AccountRole } from '../enums/appEnums';
 import { ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import clsx from 'clsx';
+import { FilterValue } from '@/types/filter';
 
 export const authStorage = {
     save(data: AuthData) {
@@ -105,6 +106,19 @@ export function getStatusValue(status: AccountStatus): string {
     }
 }
 
+export function getGenderValue(gender: Genders): string {
+    switch (gender) {
+        case Genders.Male:
+            return 'Nam';
+        case Genders.Female:
+            return 'Nữ';
+        case Genders.Other:
+            return 'Khác';
+        default:
+            return '';
+    }
+}
+
 export function formatDate(value?: string | Date | null, fallback = '-', locale = 'vi-VN'): string {
     if (!value) {
         return fallback;
@@ -118,3 +132,14 @@ export function formatDate(value?: string | Date | null, fallback = '-', locale 
 
     return date.toLocaleDateString(locale);
 }
+
+const filterValueResolvers: Record<string, (value: FilterValue) => string> = {
+    role: (value) => getRoleValue(value as Roles),
+    status: (value) => getStatusValue(value as AccountStatus),
+    gender: (value) => getGenderValue(value as Genders),
+};
+
+export const getFilterDisplayValue = (key: string, value: FilterValue): string => {
+    const resolver = filterValueResolvers[key];
+    return resolver ? resolver(value) : String(value);
+};
