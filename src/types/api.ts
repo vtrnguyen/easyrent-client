@@ -4,3 +4,11 @@ export interface Response<T, U> {
     data?: T;
     errors?: U;
 }
+
+export interface PaginationResponse<T> {
+    items: T[];
+    total: number;
+    page: number;
+    limit: number;
+    totalPages: number;
+}

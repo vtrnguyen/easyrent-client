@@ -1,9 +1,9 @@
 import clsx from 'clsx';
-import { forwardRef, type InputHTMLAttributes, type ReactNode } from 'react';
+import { forwardRef, type TextareaHTMLAttributes, type ReactNode } from 'react';
 
 type TextAlign = 'left' | 'center' | 'right';
 
-interface TextFieldProps extends InputHTMLAttributes<HTMLInputElement> {
+interface TextAreaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
     label?: string;
     hint?: string;
     error?: string;
@@ -11,10 +11,10 @@ interface TextFieldProps extends InputHTMLAttributes<HTMLInputElement> {
     rightIcon?: ReactNode;
     align?: TextAlign;
     containerClassName?: string;
-    inputClassName?: string;
+    textareaClassName?: string;
 }
 
-const TextField = forwardRef<HTMLInputElement, TextFieldProps>(function TextField(
+const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(function TextArea(
     {
         label,
         hint,
@@ -23,14 +23,14 @@ const TextField = forwardRef<HTMLInputElement, TextFieldProps>(function TextFiel
         rightIcon,
         align = 'left',
         containerClassName,
-        inputClassName,
-        id,
+        textareaClassName,
         className,
+        id,
         ...props
     },
     ref,
 ) {
-    const inputId = id ?? props.name;
+    const textareaId = id ?? props.name;
 
     return (
         <label className={clsx('block space-y-2', containerClassName)}>
@@ -38,26 +38,33 @@ const TextField = forwardRef<HTMLInputElement, TextFieldProps>(function TextFiel
 
             <div
                 className={clsx(
-                    'flex items-center gap-3 rounded-xl border border-slate-200 bg-white px-2 py-1 shadow-sm transition',
-                    error && 'border-rose-400 focus-within:border-rose-500 focus-within:ring-rose-100',
+                    `flex items-start gap-3 rounded-xl border border-slate-200 bg-white px-4 py-3 shadow-sm transition focus-within:border-slate-400 focus-within:ring-2 focus-within:ring-slate-200`,
+
+                    error && `border-rose-400 focus-within:border-rose-500 focus-within:ring-rose-100`,
+
                     className,
                 )}
             >
-                {leftIcon ? <span className="shrink-0 text-slate-400">{leftIcon}</span> : null}
+                {leftIcon ? <span className="shrink-0 pt-1 text-slate-400">{leftIcon}</span> : null}
 
-                <input
+                <textarea
                     ref={ref}
-                    id={inputId}
+                    id={textareaId}
+
                     className={clsx(
-                        'w-full bg-transparent text-slate-900 outline-none placeholder:text-slate-400',
+                        `min-h-24 w-full resize-none bg-transparent text-slate-900 outline-none placeholder:text-slate-400`,
+
                         align === 'center' && 'text-center',
+
                         align === 'right' && 'text-right',
-                        inputClassName,
+
+                        textareaClassName,
                     )}
+
                     {...props}
                 />
 
-                {rightIcon ? <span className="shrink-0 text-slate-400">{rightIcon}</span> : null}
+                {rightIcon ? <span className="shrink-0 pt-1 text-slate-400">{rightIcon}</span> : null}
             </div>
 
             {error ? (
@@ -69,4 +76,4 @@ const TextField = forwardRef<HTMLInputElement, TextFieldProps>(function TextFiel
     );
 });
 
-export default TextField;
+export default TextArea;

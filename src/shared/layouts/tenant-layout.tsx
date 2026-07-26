@@ -2,7 +2,7 @@
 
 import { AccountRole } from "@/common/enums/appEnums";
 import AuthGuard from "../guards/auth-guard";
-import Header from "./header";
+import TenantHeader from "./tenant-header";
 
 interface TenantLayoutProps {
     children: React.ReactNode;
@@ -12,7 +12,7 @@ export default function TenantLayout({ children }: TenantLayoutProps) {
     return (
         <AuthGuard allowedRoles={[AccountRole.Tenant]}>
             <div className="flex-1">
-                <Header />
+                <TenantHeader />
 
                 <main className="p-6">
                     {children}

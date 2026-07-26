@@ -16,6 +16,8 @@ export interface RegisterRequest {
 export interface AuthData {
     accessToken: string;
     userId: string;
+    fullName: string;
+    avatarUrl?: string;
     role: AccountRole;
     status: UserStatus;
     lastLoginAt?: string;
