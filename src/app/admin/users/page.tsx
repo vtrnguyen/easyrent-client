@@ -17,7 +17,7 @@ import { useUsersConstants } from './useUsersConstants';
 export default function AdminUsersPage() {
     const [users, setUsers] = useState<User[]>([]);
     const [loading, setLoading] = useState(false);
-    const [openFilter, setOpenFilter] = useState(false);
+    const [isOpenFilterSettings, setIsOpenFilterSettings] = useState(false);
     const [page, setPage] = useState(1);
 
     const { userFilters, columns } = useUsersConstants();
@@ -65,7 +65,7 @@ export default function AdminUsersPage() {
             <div className="flex items-center justify-between">
                 <h1 className="text-2xl font-semibold text-slate-900">Quản lý người dùng</h1>
 
-                <Button variant="blue" icon={<FiSearch />} onClick={() => setOpenFilter(true)}>
+                <Button variant="blue" icon={<FiSearch />} onClick={() => setIsOpenFilterSettings(true)}>
                     Tìm kiếm
                 </Button>
             </div>
@@ -105,21 +105,23 @@ export default function AdminUsersPage() {
                 }}
             />
 
-            <FilterSettings
-                open={openFilter}
-                onClose={() => setOpenFilter(false)}
-                filters={userFilters}
-                onSearch={(conditions) => {
-                    setPage(1);
-                    setFilters(
-                        conditions.map((item) => ({
-                            field: item.key,
-                            operator: SearchOperator.Equals,
-                            value: item.value,
-                        })),
-                    );
-                }}
-            />
+            {isOpenFilterSettings && (
+                <FilterSettings
+                    open={isOpenFilterSettings}
+                    onClose={() => setIsOpenFilterSettings(false)}
+                    filters={userFilters}
+                    onSearch={(conditions) => {
+                        setPage(1);
+                        setFilters(
+                            conditions.map((item) => ({
+                                field: item.key,
+                                operator: SearchOperator.Equals,
+                                value: item.value,
+                            })),
+                        );
+                    }}
+                />
+            )}
         </section>
     );
 }
