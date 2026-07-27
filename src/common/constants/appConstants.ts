@@ -12,6 +12,7 @@ export const appRoutes = {
 
     admin: 'admin',
     users: 'users',
+    backupAndRestore: 'backupandrestore',
 
     landlord: 'landlord',
     properties: 'properties',
