@@ -30,6 +30,8 @@ interface TableProps<T> {
     onSort?: (fieldId: string, direction?: SortOrder) => void;
     defaultSort?: TableSort;
     loading?: boolean;
+    onRowClick?: (record: T) => void;
+    rowClickable?: boolean;
 }
 
 export default function Table<T>({
@@ -43,6 +45,8 @@ export default function Table<T>({
     sortDirection,
     onSort,
     defaultSort,
+    onRowClick,
+    rowClickable,
 }: TableProps<T>) {
     const allSelected = data.length > 0 && data.every((item) => selectedIds.includes(getRowId(item)));
 
@@ -175,7 +179,7 @@ export default function Table<T>({
                                 return (
                                     <tr
                                         key={id}
-                                        className={`transition hover:bg-slate-50 ${
+                                        className={`cursor-pointer transition hover:bg-slate-50 ${
                                             index !== data.length - 1 ? 'border-b border-slate-300' : ''
                                         } ${selected ? 'bg-slate-100' : ''}`}
                                     >
@@ -191,6 +195,11 @@ export default function Table<T>({
                                             <td
                                                 key={column.fieldId}
                                                 className="border-r border-slate-200 px-4 py-3 text-sm text-slate-700"
+                                                onClick={() => {
+                                                    if (rowClickable && onRowClick) {
+                                                        onRowClick(record);
+                                                    }
+                                                }}
                                             >
                                                 {column.renderCell(record, index)}
                                             </td>

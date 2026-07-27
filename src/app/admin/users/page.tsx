@@ -16,8 +16,11 @@ import { useUsersConstants } from './useUsersConstants';
 import { FilterCondition } from '@/types/filter';
 import Badge from '@/shared/components/badge/badge';
 import { getFilterDisplayValue } from '@/common/helpers/helper';
+import { useRouter } from 'next/navigation';
 
 export default function AdminUsersPage() {
+    const router = useRouter();
+
     const [users, setUsers] = useState<User[]>([]);
     const [loading, setLoading] = useState(false);
     const [isOpenFilterSettings, setIsOpenFilterSettings] = useState(false);
@@ -96,7 +99,7 @@ export default function AdminUsersPage() {
             </div>
 
             <div className="flex items-center gap-2">
-                <Button icon={<FiPlus />} variant="blue">
+                <Button icon={<FiPlus />} variant="blue" onClick={() => router.push('/admin/users/create')}>
                     Tạo mới
                 </Button>
             </div>
@@ -115,6 +118,8 @@ export default function AdminUsersPage() {
                 onSelectionChange={setSelectedIds}
                 sortField={sort[0]?.field}
                 sortDirection={sort[0]?.direction}
+                rowClickable
+                onRowClick={(user) => router.push(`/admin/users/${user.id}`)}
                 onSort={(field, direction) => {
                     if (!direction || !field) {
                         setSort([]);
