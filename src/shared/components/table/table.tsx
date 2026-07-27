@@ -112,41 +112,45 @@ export default function Table<T>({
                             )}
 
                             {columns.map((column) => (
-                                <th
-                                    key={column.fieldId}
-                                    className="border-r border-b border-slate-300 px-4 py-3 text-left"
-                                >
-                                    <div className="flex items-center justify-center gap-3">
-                                        {column.renderHeader ? column.renderHeader() : column.header}
-                                        {column.sortable && (
-                                            <div className="flex flex-col gap-0.5">
-                                                <button
-                                                    type="button"
-                                                    className={`flex h-4 w-4 cursor-pointer items-center justify-center rounded-sm border transition ${
-                                                        sortField === column.fieldId &&
-                                                        sortDirection === SortOrder.Ascending
-                                                            ? 'bg-blue-600 text-white'
-                                                            : 'bg-white text-slate-400 hover:bg-slate-100'
-                                                    } `}
-                                                    onClick={() => handleSort(column.fieldId, SortOrder.Ascending)}
-                                                >
-                                                    <FiChevronUp size={12} />
-                                                </button>
+                                <th key={column.fieldId} className="border-r border-b border-slate-300 px-4 py-3">
+                                    <div className="grid grid-cols-[16px_1fr_16px] items-center">
+                                        <div />
 
-                                                <button
-                                                    type="button"
-                                                    className={`flex h-4 w-4 cursor-pointer items-center justify-center rounded-sm border transition ${
-                                                        sortField === column.fieldId &&
-                                                        sortDirection === SortOrder.Descending
-                                                            ? 'bg-blue-600 text-white'
-                                                            : 'bg-white text-slate-400 hover:bg-slate-100'
-                                                    } `}
-                                                    onClick={() => handleSort(column.fieldId, SortOrder.Descending)}
-                                                >
-                                                    <FiChevronDown size={12} />
-                                                </button>
-                                            </div>
-                                        )}
+                                        <div className="text-center">
+                                            {column.renderHeader ? column.renderHeader() : column.header}
+                                        </div>
+
+                                        <div className="flex flex-col gap-0.5">
+                                            {column.sortable && (
+                                                <>
+                                                    <button
+                                                        type="button"
+                                                        className={`flex h-4 w-4 cursor-pointer items-center justify-center rounded-sm border transition ${
+                                                            sortField === column.fieldId &&
+                                                            sortDirection === SortOrder.Ascending
+                                                                ? 'bg-blue-600 text-white'
+                                                                : 'bg-white text-slate-400 hover:bg-slate-100'
+                                                        }`}
+                                                        onClick={() => handleSort(column.fieldId, SortOrder.Ascending)}
+                                                    >
+                                                        <FiChevronUp size={12} />
+                                                    </button>
+
+                                                    <button
+                                                        type="button"
+                                                        className={`flex h-4 w-4 cursor-pointer items-center justify-center rounded-sm border transition ${
+                                                            sortField === column.fieldId &&
+                                                            sortDirection === SortOrder.Descending
+                                                                ? 'bg-blue-600 text-white'
+                                                                : 'bg-white text-slate-400 hover:bg-slate-100'
+                                                        }`}
+                                                        onClick={() => handleSort(column.fieldId, SortOrder.Descending)}
+                                                    >
+                                                        <FiChevronDown size={12} />
+                                                    </button>
+                                                </>
+                                            )}
+                                        </div>
                                     </div>
                                 </th>
                             ))}
