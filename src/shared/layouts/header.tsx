@@ -3,23 +3,15 @@
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
-import Avatar from '@/shared/components/avatar/avatar';
-import Button from '@/shared/components/buttons/button';
+import UserMenu from '@/shared/components/user-menu/user-menu';
 
-import { authStorage, getHomeRoute } from '@/common/helpers/helper';
+import { getHomeRoute } from '@/common/helpers/helper';
 import { useAuthStore } from '@/stores/auth.store';
 
 export default function Header() {
     const router = useRouter();
 
     const user = useAuthStore((state) => state.user);
-    const logout = useAuthStore((state) => state.logout);
-
-    const handleLogout = () => {
-        authStorage.clear();
-        logout();
-        router.replace('/auth/login');
-    };
 
     const handleGoHome = () => {
         router.push(getHomeRoute(user?.role));
@@ -46,11 +38,7 @@ export default function Header() {
                 <p className="text-green-500">EasyRent</p>
             </button>
 
-            <div className="flex items-center gap-4">
-                <Avatar src={user?.avatarUrl} name={user?.fullName} showName size="md" />
-
-                <Button onClick={handleLogout}>Đăng xuất</Button>
-            </div>
+            <UserMenu />
         </header>
     );
 }

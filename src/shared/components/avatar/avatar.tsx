@@ -1,6 +1,8 @@
 'use client';
 
 import Image from 'next/image';
+import { MouseEventHandler } from 'react';
+
 import { cn } from '@/common/helpers/helper';
 
 interface AvatarProps {
@@ -10,6 +12,7 @@ interface AvatarProps {
     namePosition?: 'left' | 'right';
     size?: 'sm' | 'md' | 'lg';
     className?: string;
+    onClick?: MouseEventHandler<HTMLButtonElement>;
 }
 
 export default function Avatar({
@@ -19,11 +22,12 @@ export default function Avatar({
     namePosition = 'right',
     size = 'md',
     className,
+    onClick,
 }: AvatarProps) {
     const sizeClass = {
-        sm: 'w-8 h-8 text-xs',
-        md: 'w-10 h-10 text-sm',
-        lg: 'w-14 h-14 text-lg',
+        sm: 'h-8 w-8 text-xs',
+        md: 'h-10 w-10 text-sm',
+        lg: 'h-14 w-14 text-lg',
     };
 
     const firstLetter = name?.trim()?.charAt(0)?.toUpperCase() ?? '?';
@@ -31,24 +35,38 @@ export default function Avatar({
     const avatar = (
         <div
             className={cn(
-                `relative flex shrink-0 items-center justify-center overflow-hidden rounded-full bg-slate-200 font-semibold text-slate-600`,
+                'relative flex shrink-0 items-center justify-center overflow-hidden rounded-full bg-slate-200 font-semibold text-slate-600',
                 sizeClass[size],
-                className,
             )}
         >
             {src ? <Image src={src} alt={name ?? 'Avatar'} fill className="object-cover" /> : firstLetter}
         </div>
     );
 
-    if (!showName) {
-        return avatar;
-    }
-
-    return (
-        <div className={cn('flex items-center gap-3', namePosition === 'left' ? 'flex-row-reverse' : 'flex-row')}>
+    const content = showName ? (
+        <>
             <span className="text-sm font-medium whitespace-nowrap text-slate-800">{name}</span>
 
             {avatar}
-        </div>
+        </>
+    ) : (
+        avatar
     );
+
+    const wrapperClass = cn(
+        'flex items-center gap-3 outline-none',
+        showName && (namePosition === 'left' ? 'flex-row-reverse' : 'flex-row'),
+        onClick && 'cursor-pointer transition-opacity hover:opacity-90',
+        className,
+    );
+
+    if (onClick) {
+        return (
+            <button type="button" onClick={onClick} className={wrapperClass}>
+                {content}
+            </button>
+        );
+    }
+
+    return <div className={wrapperClass}>{content}</div>;
 }
