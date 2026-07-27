@@ -39,9 +39,7 @@ const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(function TextAre
             <div
                 className={clsx(
                     `flex items-start gap-3 rounded-xl border border-slate-200 bg-white px-4 py-3 shadow-sm transition focus-within:border-slate-400 focus-within:ring-2 focus-within:ring-slate-200`,
-
                     error && `border-rose-400 focus-within:border-rose-500 focus-within:ring-rose-100`,
-
                     className,
                 )}
             >
@@ -53,11 +51,8 @@ const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(function TextAre
 
                     className={clsx(
                         `min-h-24 w-full resize-none bg-transparent text-slate-900 outline-none placeholder:text-slate-400`,
-
                         align === 'center' && 'text-center',
-
                         align === 'right' && 'text-right',
-
                         textareaClassName,
                     )}
 

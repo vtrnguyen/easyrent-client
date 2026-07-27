@@ -17,6 +17,7 @@ export interface User {
     fullName: string;
     avatarUrl: string;
     gender: Genders;
+    birthday: string;
     address: string;
     identityNumber: string;
     bio: string;

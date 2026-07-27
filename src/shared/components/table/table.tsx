@@ -29,7 +29,6 @@ interface TableProps<T> {
     sortDirection?: SortOrder;
     onSort?: (fieldId: string, direction?: SortOrder) => void;
     defaultSort?: TableSort;
-    loading?: boolean;
     onRowClick?: (record: T) => void;
     rowClickable?: boolean;
 }

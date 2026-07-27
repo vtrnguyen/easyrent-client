@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import { FiPlus, FiSearch } from 'react-icons/fi';
 
@@ -17,12 +17,13 @@ import { FilterCondition } from '@/types/filter';
 import Badge from '@/shared/components/badge/badge';
 import { getFilterDisplayValue } from '@/common/helpers/helper';
 import { useRouter } from 'next/navigation';
+import useLoadingOverlay from '@/shared/hooks/useLoadingOverlay';
 
 export default function AdminUsersPage() {
     const router = useRouter();
+    const loading = useLoadingOverlay();
 
     const [users, setUsers] = useState<User[]>([]);
-    const [loading, setLoading] = useState(false);
     const [isOpenFilterSettings, setIsOpenFilterSettings] = useState(false);
     const [page, setPage] = useState(1);
 
@@ -40,7 +41,7 @@ export default function AdminUsersPage() {
         let cancelled = false;
 
         const loadUsers = async () => {
-            setLoading(true);
+            loading.open();
 
             try {
                 const response = await userApi.search({
@@ -57,7 +58,7 @@ export default function AdminUsersPage() {
                 }
             } finally {
                 if (!cancelled) {
-                    setLoading(false);
+                    loading.close();
                 }
             }
         };
@@ -67,7 +68,14 @@ export default function AdminUsersPage() {
         return () => {
             cancelled = true;
         };
-    }, [page, filters, sort, filterLogic]);
+    }, [loading, page, filters, sort, filterLogic]);
+
+    const handleNavigateToUserPage = useCallback(
+        (userId: string) => {
+            router.push(`/admin/users/${userId}`);
+        },
+        [router],
+    );
 
     return (
         <section className="space-y-4">
@@ -99,7 +107,7 @@ export default function AdminUsersPage() {
             </div>
 
             <div className="flex items-center gap-2">
-                <Button icon={<FiPlus />} variant="blue" onClick={() => router.push('/admin/users/create')}>
+                <Button icon={<FiPlus />} variant="blue" onClick={() => handleNavigateToUserPage('create')}>
                     Tạo mới
                 </Button>
             </div>
@@ -111,7 +119,6 @@ export default function AdminUsersPage() {
             <Table
                 columns={columns}
                 data={users}
-                loading={loading}
                 selectable={false}
                 getRowId={(user) => user.id}
                 selectedIds={selectedIds}
@@ -119,7 +126,7 @@ export default function AdminUsersPage() {
                 sortField={sort[0]?.field}
                 sortDirection={sort[0]?.direction}
                 rowClickable
-                onRowClick={(user) => router.push(`/admin/users/${user.id}`)}
+                onRowClick={(user) => handleNavigateToUserPage(user.id)}
                 onSort={(field, direction) => {
                     if (!direction || !field) {
                         setSort([]);

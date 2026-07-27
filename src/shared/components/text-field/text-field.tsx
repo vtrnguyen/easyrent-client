@@ -38,7 +38,7 @@ const TextField = forwardRef<HTMLInputElement, TextFieldProps>(function TextFiel
 
             <div
                 className={clsx(
-                    'flex items-center gap-3 rounded-xl border border-slate-200 bg-white px-2 py-1 shadow-sm transition',
+                    'flex items-center gap-3 rounded-lg border border-slate-200 bg-white px-2 py-1 shadow-sm transition',
                     error && 'border-rose-400 focus-within:border-rose-500 focus-within:ring-rose-100',
                     className,
                 )}

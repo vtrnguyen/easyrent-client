@@ -28,6 +28,12 @@ export const useUsersConstants = () => {
             placeholder: 'Nhập số điện thoại',
         },
         {
+            key: 'birth_day',
+            label: 'Ngày sinh',
+            type: 'date',
+            placeholder: 'Chọn ngày sinh',
+        },
+        {
             key: 'role',
             label: 'Vai trò',
             type: 'select',
@@ -112,6 +118,12 @@ export const useUsersConstants = () => {
             header: 'Số điện thoại',
             sortable: true,
             renderCell: (user) => user.phoneNumber,
+        },
+        {
+            fieldId: 'birth_day',
+            header: 'Ngày sinh',
+            sortable: true,
+            renderCell: (user) => formatDate(user.birthday, 'Chưa có'),
         },
         {
             fieldId: 'role',

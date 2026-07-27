@@ -1,8 +1,9 @@
-import "./globals.css";
+import './globals.css';
 
-import { Toaster } from "react-hot-toast";
+import { Toaster } from 'react-hot-toast';
 
-import AuthProvider from "@/shared/providers/auth-provider";
+import AuthProvider from '@/shared/providers/auth-provider';
+import { LoadingOverlayProvider } from '@/shared/components/loading-overlay/loading-overlay-provider';
 
 export default function RootLayout({
     children,
@@ -12,10 +13,12 @@ export default function RootLayout({
     return (
         <html lang="vi">
             <body>
-                <AuthProvider>
-                    {children}
-                    <Toaster position="top-right" />
-                </AuthProvider>
+                <LoadingOverlayProvider>
+                    <AuthProvider>
+                        {children}
+                        <Toaster position="top-right" />
+                    </AuthProvider>
+                </LoadingOverlayProvider>
             </body>
         </html>
     );

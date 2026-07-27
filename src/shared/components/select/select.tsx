@@ -47,7 +47,7 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(function Select(
 
             <div
                 className={clsx(
-                    'flex items-center gap-3 rounded-xl border border-slate-200 bg-white px-2 py-1 shadow-sm transition focus-within:border-slate-400 focus-within:ring-2 focus-within:ring-slate-200',
+                    'flex items-center gap-3 rounded-lg border border-slate-200 bg-white px-2 py-1 shadow-sm transition focus-within:border-slate-400 focus-within:ring-2 focus-within:ring-slate-200',
                     error && 'border-rose-400 focus-within:border-rose-500 focus-within:ring-rose-100',
                     className,
                 )}
