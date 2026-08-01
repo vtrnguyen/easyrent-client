@@ -4,6 +4,7 @@ import { forwardRef, InputHTMLAttributes } from 'react';
 interface CheckboxProps extends InputHTMLAttributes<HTMLInputElement> {
     title?: string;
     checkBoxSize?: 'sm' | 'md';
+    isDisable?: boolean;
 }
 
 const sizeClasses = {
@@ -12,13 +13,14 @@ const sizeClasses = {
 };
 
 const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(function Checkbox(
-    { title, checkBoxSize = 'md', className, ...props },
+    { title, checkBoxSize = 'md', className, isDisable = false, ...props },
     ref,
 ) {
     const checkbox = (
         <input
             ref={ref}
             type="checkbox"
+            disabled={isDisable}
             className={clsx(
                 'rounded border-slate-300 text-slate-900 shadow-sm transition outline-none focus:ring-0 focus:ring-offset-0 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50',
                 sizeClasses[checkBoxSize],
@@ -33,7 +35,7 @@ const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(function Checkbox(
     }
 
     return (
-        <label className="inline-flex cursor-pointer items-center gap-2">
+        <label className={clsx('inline-flex items-center gap-2', isDisable ? 'cursor-not-allowed' : 'cursor-pointer')}>
             <span className="text-xs">{title}</span>
             {checkbox}
         </label>

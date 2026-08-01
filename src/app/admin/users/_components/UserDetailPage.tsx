@@ -155,19 +155,22 @@ export default function UserDetailPage({ userId }: Props) {
                     />
                 </div>
 
-                <div className="mt-5">
-                    <Controller
-                        name="emailVerified"
-                        control={control}
-                        render={({ field }) => (
-                            <Checkbox
-                                title="Email đã xác thực"
-                                checked={field.value}
-                                onChange={(e) => field.onChange(e.target.checked)}
-                            />
-                        )}
-                    />
-                </div>
+                {!isCreate && (
+                    <div className="mt-5">
+                        <Controller
+                            name="emailVerified"
+                            control={control}
+                            render={({ field }) => (
+                                <Checkbox
+                                    title="Email đã xác thực"
+                                    checked={field.value}
+                                    isDisable
+                                    onChange={(e) => field.onChange(e.target.checked)}
+                                />
+                            )}
+                        />
+                    </div>
+                )}
             </Card>
 
             <Card title="Thông tin cá nhân">
