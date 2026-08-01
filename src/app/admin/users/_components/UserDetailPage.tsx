@@ -18,6 +18,7 @@ import { userApi } from '@/api/user.api';
 import { AccountStatus, Genders, Roles } from '@/common/constants/appConstants';
 import useLoadingOverlay from '@/shared/hooks/useLoadingOverlay';
 import { UserForm, userSchema } from '@/validations/user.schema';
+import Confirmation from '@/shared/components/confirmation/confirmation';
 
 interface Props {
     userId?: string;
@@ -29,6 +30,8 @@ export default function UserDetailPage({ userId }: Props) {
     const loading = useLoadingOverlay();
 
     const [avatarPreview, setAvatarPreview] = useState('');
+    const [openConfirm, setOpenConfirm] = useState(false);
+    const [submitValues, setSubmitValues] = useState<UserForm | null>(null);
 
     const {
         register,
@@ -101,17 +104,31 @@ export default function UserDetailPage({ userId }: Props) {
         };
     }, [isCreate, userId, loading, reset]);
 
-    const onSubmit = async (values: UserForm) => {
+    // Chạy sau khi form validate thành công
+    const onSubmit = (values: UserForm) => {
+        setSubmitValues(values);
+        setOpenConfirm(true);
+    };
+
+    // Chạy khi bấm nút Đồng ý trên Confirmation
+    const handleConfirm = async () => {
+        if (!submitValues) {
+            return;
+        }
+
         try {
             loading.open();
 
             if (isCreate) {
-                console.log('Create', values);
+                console.log('Create', submitValues);
                 toast.success('Tạo người dùng thành công.');
             } else {
-                console.log('Update', values);
+                console.log('Update', submitValues);
                 toast.success('Cập nhật người dùng thành công.');
             }
+
+            setOpenConfirm(false);
+            setSubmitValues(null);
         } catch {
             toast.error('Đã xảy ra lỗi.');
         } finally {
@@ -120,107 +137,130 @@ export default function UserDetailPage({ userId }: Props) {
     };
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-            <div className="flex items-center justify-between">
-                <h1 className="text-2xl font-semibold">{isCreate ? 'Tạo người dùng' : 'Cập nhật người dùng'}</h1>
+        <>
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+                <div className="flex items-center justify-between">
+                    <h1 className="text-2xl font-semibold">{isCreate ? 'Tạo người dùng' : 'Cập nhật người dùng'}</h1>
 
-                <Button type="submit">{isSubmitting ? 'Đang lưu...' : 'Lưu'}</Button>
-            </div>
-
-            <Card title="Thông tin tài khoản">
-                <div className="grid grid-cols-2 gap-5">
-                    <TextField label="Email" error={errors.email?.message} {...register('email')} />
-
-                    <TextField label="Số điện thoại" error={errors.phoneNumber?.message} {...register('phoneNumber')} />
-
-                    <Select
-                        label="Vai trò"
-                        error={errors.role?.message}
-                        options={[
-                            { label: 'Khách thuê', value: Roles.Tenant },
-                            { label: 'Chủ nhà', value: Roles.Landlord },
-                            { label: 'Quản trị viên', value: Roles.Admin },
-                        ]}
-                        {...register('role')}
-                    />
-
-                    <Select
-                        label="Trạng thái"
-                        error={errors.status?.message}
-                        options={[
-                            { label: 'Hoạt động', value: AccountStatus.Active },
-                            { label: 'Khóa', value: AccountStatus.Inactive },
-                        ]}
-                        {...register('status')}
-                    />
+                    <Button type="submit">{isSubmitting ? 'Đang lưu...' : 'Lưu'}</Button>
                 </div>
 
-                {!isCreate && (
-                    <div className="mt-5">
-                        <Controller
-                            name="emailVerified"
-                            control={control}
-                            render={({ field }) => (
-                                <Checkbox
-                                    title="Email đã xác thực"
-                                    checked={field.value}
-                                    isDisable
-                                    onChange={(e) => field.onChange(e.target.checked)}
-                                />
-                            )}
+                <Card title="Thông tin tài khoản">
+                    <div className="grid grid-cols-2 gap-5">
+                        <TextField label="Email" error={errors.email?.message} {...register('email')} />
+
+                        <TextField
+                            label="Số điện thoại"
+                            error={errors.phoneNumber?.message}
+                            {...register('phoneNumber')}
+                        />
+
+                        <Select
+                            label="Vai trò"
+                            error={errors.role?.message}
+                            options={[
+                                { label: 'Khách thuê', value: Roles.Tenant },
+                                { label: 'Chủ nhà', value: Roles.Landlord },
+                                { label: 'Quản trị viên', value: Roles.Admin },
+                            ]}
+                            {...register('role')}
+                        />
+
+                        <Select
+                            label="Trạng thái"
+                            error={errors.status?.message}
+                            options={[
+                                { label: 'Hoạt động', value: AccountStatus.Active },
+                                { label: 'Khóa', value: AccountStatus.Inactive },
+                            ]}
+                            {...register('status')}
                         />
                     </div>
-                )}
-            </Card>
 
-            <Card title="Thông tin cá nhân">
-                <div className="grid grid-cols-2 gap-5">
-                    <TextField label="Họ và tên" error={errors.fullName?.message} {...register('fullName')} />
+                    {!isCreate && (
+                        <div className="mt-5">
+                            <Controller
+                                name="emailVerified"
+                                control={control}
+                                render={({ field }) => (
+                                    <Checkbox
+                                        title="Email đã xác thực"
+                                        checked={field.value}
+                                        isDisable
+                                        onChange={(e) => field.onChange(e.target.checked)}
+                                    />
+                                )}
+                            />
+                        </div>
+                    )}
+                </Card>
 
-                    <Select
-                        label="Giới tính"
-                        error={errors.gender?.message}
-                        options={[
-                            { label: 'Nam', value: Genders.Male },
-                            { label: 'Nữ', value: Genders.Female },
-                            { label: 'Khác', value: Genders.Other },
-                        ]}
-                        {...register('gender')}
+                <Card title="Thông tin cá nhân">
+                    <div className="grid grid-cols-2 gap-5">
+                        <TextField label="Họ và tên" error={errors.fullName?.message} {...register('fullName')} />
+
+                        <Select
+                            label="Giới tính"
+                            error={errors.gender?.message}
+                            options={[
+                                { label: 'Nam', value: Genders.Male },
+                                { label: 'Nữ', value: Genders.Female },
+                                { label: 'Khác', value: Genders.Other },
+                            ]}
+                            {...register('gender')}
+                        />
+
+                        <TextField
+                            type="date"
+                            label="Ngày sinh"
+                            error={errors.birthday?.message}
+                            {...register('birthday')}
+                        />
+
+                        <TextField label="Nghề nghiệp" error={errors.occupation?.message} {...register('occupation')} />
+
+                        <TextField
+                            label="CCCD / CMND"
+                            error={errors.identityNumber?.message}
+                            {...register('identityNumber')}
+                        />
+                    </div>
+                </Card>
+
+                <Card title="Địa chỉ">
+                    <TextArea error={errors.address?.message} {...register('address')} />
+                </Card>
+
+                <Card title="Giới thiệu">
+                    <TextArea error={errors.bio?.message} {...register('bio')} />
+                </Card>
+
+                <Card title="Ảnh đại diện">
+                    <AvatarUpload
+                        previewUrl={avatarPreview}
+                        onChange={(file) => {
+                            setAvatarPreview(URL.createObjectURL(file));
+                        }}
                     />
+                </Card>
+            </form>
 
-                    <TextField
-                        type="date"
-                        label="Ngày sinh"
-                        error={errors.birthday?.message}
-                        {...register('birthday')}
-                    />
-
-                    <TextField label="Nghề nghiệp" error={errors.occupation?.message} {...register('occupation')} />
-
-                    <TextField
-                        label="CCCD / CMND"
-                        error={errors.identityNumber?.message}
-                        {...register('identityNumber')}
-                    />
-                </div>
-            </Card>
-
-            <Card title="Địa chỉ">
-                <TextArea error={errors.address?.message} {...register('address')} />
-            </Card>
-
-            <Card title="Giới thiệu">
-                <TextArea error={errors.bio?.message} {...register('bio')} />
-            </Card>
-
-            <Card title="Ảnh đại diện">
-                <AvatarUpload
-                    previewUrl={avatarPreview}
-                    onChange={(file) => {
-                        setAvatarPreview(URL.createObjectURL(file));
-                    }}
-                />
-            </Card>
-        </form>
+            <Confirmation
+                open={openConfirm}
+                title={isCreate ? 'Tạo người dùng' : 'Cập nhật người dùng'}
+                message={
+                    isCreate
+                        ? 'Bạn có chắc chắn muốn tạo người dùng này?'
+                        : 'Bạn có chắc chắn muốn cập nhật thông tin người dùng này?'
+                }
+                cancelText="Hủy"
+                confirmText="Đồng ý"
+                onCancel={() => {
+                    setOpenConfirm(false);
+                    setSubmitValues(null);
+                }}
+                onConfirm={handleConfirm}
+            />
+        </>
     );
 }
