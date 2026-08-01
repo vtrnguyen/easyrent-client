@@ -253,8 +253,6 @@ export default function UserDetailPage({ userId }: Props) {
                         ? 'Bạn có chắc chắn muốn tạo người dùng này?'
                         : 'Bạn có chắc chắn muốn cập nhật thông tin người dùng này?'
                 }
-                cancelText="Hủy"
-                confirmText="Đồng ý"
                 onCancel={() => {
                     setOpenConfirm(false);
                     setSubmitValues(null);

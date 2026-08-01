@@ -22,9 +22,9 @@ interface ConfirmationProps {
 export default function Confirmation({
     open,
     title = 'Xác nhận',
-    message = 'Bạn có chắc chắn muốn thực hiện thao tác này?',
+    message,
     cancelText = 'Hủy',
-    confirmText = 'Đồng ý',
+    confirmText = 'OK',
     loading = false,
     width = 'max-w-md',
     className,
@@ -39,7 +39,7 @@ export default function Confirmation({
                     <div>
                         <h3 className="text-2xl font-semibold text-slate-900">{title}</h3>
 
-                        <p className="mt-2 text-base leading-6 text-slate-500">{message}</p>
+                        {message && <p className="mt-2 text-base leading-6 text-slate-500">{message}</p>}
                     </div>
                 </div>
 
