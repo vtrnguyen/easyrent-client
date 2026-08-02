@@ -152,7 +152,7 @@ export function formatDateForInput(value?: string | Date | null): string {
         return '';
     }
 
-    return date.toISOString().split('T')[0];
+    return new Intl.DateTimeFormat('en-CA').format(date);
 }
 
 const filterValueResolvers: Record<string, (value: FilterValue) => string> = {
