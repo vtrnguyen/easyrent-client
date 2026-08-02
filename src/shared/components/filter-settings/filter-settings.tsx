@@ -64,6 +64,7 @@ export default function FilterSettings({
     const handleClear = () => {
         setActiveFilters([]);
         setPendingFilter(null);
+        setFilterLogic(FilterLogics.And);
     };
 
     const handleSelectField = (fieldKey: string) => {
