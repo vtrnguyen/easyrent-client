@@ -1,5 +1,6 @@
-import { authStorage, getHomeRoute, toCamelCase, toSnakeCase } from "@/common/helpers/helper";
-import { api } from "./axios";
+import { authStorage, getHomeRoute, toCamelCase, toSnakeCase } from '@/common/helpers/helper';
+import { api } from './axios';
+import toast from 'react-hot-toast';
 
 api.interceptors.request.use((config) => {
     const auth = authStorage.get();
@@ -26,13 +27,13 @@ api.interceptors.response.use(
         const auth = authStorage.get();
 
         if ((status === 401 || status === 403) && auth?.accessToken) {
-            window.location.href = getHomeRoute(auth?.role);
+            window.location.href = getHomeRoute(auth.role);
         }
 
         if (status >= 500) {
-            alert("Server error. Please try again later.");
+            toast.error('Đã xảy ra lỗi hệ thống. Vui lòng thử lại sau.');
         }
 
         return Promise.reject(error);
-    }
-)
+    },
+);
