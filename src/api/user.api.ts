@@ -14,6 +14,10 @@ export const userApi = {
         await api.post<SuccessResponse<void>>('/user', payload);
     },
 
+    async update(id: string, payload: FormData): Promise<void> {
+        await api.put<SuccessResponse<void>>(`/user/${id}`, payload);
+    },
+
     async getById(id: string): Promise<User> {
         const response = await api.get<SuccessResponse<User>>(`/user/${id}`);
         return toCamelCase(response.data.data) as User;

@@ -39,7 +39,7 @@ export default function Avatar({
                 sizeClass[size],
             )}
         >
-            {src ? <Image src={src} alt={name ?? 'Avatar'} fill className="object-cover" /> : firstLetter}
+            {src ? <Image src={src} alt={name ?? 'Avatar'} fill unoptimized className="object-cover" /> : firstLetter}
         </div>
     );
 

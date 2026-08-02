@@ -132,36 +132,32 @@ export default function UserDetailPage({ userId }: Props) {
         try {
             loading.open();
 
+            const formData = createFormData({
+                email: submitValues.email,
+                phone_number: submitValues.phoneNumber,
+                role: submitValues.role,
+                status: submitValues.status,
+                full_name: submitValues.fullName,
+                gender: submitValues.gender,
+                birthday: submitValues.birthday,
+                occupation: submitValues.occupation,
+                identity_number: submitValues.identityNumber,
+                address: submitValues.address,
+                bio: submitValues.bio,
+                avatar: submitValues.avatarFile,
+            });
+
             if (isCreate) {
-                const formData = createFormData({
-                    email: submitValues.email,
-                    phone_number: submitValues.phoneNumber,
-                    role: submitValues.role,
-                    status: submitValues.status,
-                    full_name: submitValues.fullName,
-                    gender: submitValues.gender,
-                    birthday: submitValues.birthday,
-                    occupation: submitValues.occupation,
-                    identity_number: submitValues.identityNumber,
-                    address: submitValues.address,
-                    bio: submitValues.bio,
-                    avatar: submitValues.avatarFile,
-                });
-
                 await userApi.create(formData);
-
                 toast.success('Tạo người dùng thành công.');
-
-                router.push('/admin/users');
-                return;
+            } else {
+                await userApi.update(userId!, formData);
+                toast.success('Cập nhật người dùng thành công.');
             }
 
-            // TODO: Update
-            console.log('Update', submitValues);
-
-            toast.success('Cập nhật người dùng thành công.');
+            router.replace('/admin/users');
         } catch (error) {
-            toast.error(`Đã xảy ra lỗi: ${(error as Error).message}`);
+            toast.error((error as Error).message);
         } finally {
             setOpenConfirm(false);
             setSubmitValues(null);
