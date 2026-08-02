@@ -52,9 +52,9 @@ export default function AdminUsersPage() {
                     sorts: sort,
                 });
 
-                if (!cancelled && response.data) {
-                    setUsers(response.data.items);
-                    setTotal(response.data.total);
+                if (!cancelled) {
+                    setUsers(response.items);
+                    setTotal(response.total);
                 }
             } finally {
                 if (!cancelled) {

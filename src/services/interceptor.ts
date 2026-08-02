@@ -2,11 +2,24 @@ import { authStorage, getHomeRoute, toCamelCase, toSnakeCase } from '@/common/he
 import { api } from './axios';
 import toast from 'react-hot-toast';
 
+function isFormData(value: unknown): value is FormData {
+    return typeof FormData !== 'undefined' && value instanceof FormData;
+}
+
 api.interceptors.request.use((config) => {
     const auth = authStorage.get();
 
     if (auth?.accessToken) {
         config.headers.Authorization = `Bearer ${auth.accessToken}`;
+    }
+
+    if (isFormData(config.data)) {
+        if (config.headers) {
+            delete config.headers['Content-Type'];
+            delete config.headers['content-type'];
+        }
+
+        return config;
     }
 
     if (config.data) {

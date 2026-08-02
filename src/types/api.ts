@@ -1,9 +1,17 @@
-export interface Response<T, U> {
-    success: boolean;
+export interface SuccessResponse<T = void> {
+    success: true;
     message: string;
-    data?: T;
-    errors?: U;
+    data: T;
 }
+
+export interface ErrorResponse<E = unknown> {
+    success: false;
+    message: string;
+    code?: string;
+    errors?: E;
+}
+
+export type ApiResponse<T = void, E = unknown> = SuccessResponse<T> | ErrorResponse<E>;
 
 export interface PaginationResponse<T> {
     items: T[];

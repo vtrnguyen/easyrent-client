@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Controller, useForm } from 'react-hook-form';
+import { Controller, useForm, useWatch } from 'react-hook-form';
 import toast from 'react-hot-toast';
 
 import AvatarUpload from '@/shared/components/avatar-upload/avatar-upload';
@@ -26,6 +26,8 @@ import useLoadingOverlay from '@/shared/hooks/useLoadingOverlay';
 import { UserForm, userSchema } from '@/validations/user.schema';
 import Confirmation from '@/shared/components/confirmation/confirmation';
 import Dropdown from '@/shared/components/dropdown/dropdown';
+import { createFormData, formatDateForInput } from '@/common/helpers/helper';
+import { useRouter } from 'next/navigation';
 
 interface Props {
     userId?: string;
@@ -35,8 +37,8 @@ export default function UserDetailPage({ userId }: Props) {
     const isCreate = !userId;
 
     const loading = useLoadingOverlay();
+    const router = useRouter();
 
-    const [avatarPreview, setAvatarPreview] = useState('');
     const [openConfirm, setOpenConfirm] = useState(false);
     const [submitValues, setSubmitValues] = useState<UserForm | null>(null);
 
@@ -45,6 +47,7 @@ export default function UserDetailPage({ userId }: Props) {
         handleSubmit,
         reset,
         control,
+        setValue,
         formState: { errors, isSubmitting },
     } = useForm<UserForm>({
         resolver: zodResolver(userSchema),
@@ -63,6 +66,11 @@ export default function UserDetailPage({ userId }: Props) {
             avatarUrl: '',
             emailVerified: false,
         },
+    });
+
+    const avatarUrl = useWatch({
+        control,
+        name: 'avatarUrl',
     });
 
     useEffect(() => {
@@ -86,7 +94,7 @@ export default function UserDetailPage({ userId }: Props) {
                         role: user.role,
                         status: user.status,
                         gender: user.gender,
-                        birthday: user.birthday,
+                        birthday: formatDateForInput(user.birthday),
                         address: user.address,
                         bio: user.bio,
                         occupation: user.occupation,
@@ -125,18 +133,38 @@ export default function UserDetailPage({ userId }: Props) {
             loading.open();
 
             if (isCreate) {
-                console.log('Create', submitValues);
+                const formData = createFormData({
+                    email: submitValues.email,
+                    phone_number: submitValues.phoneNumber,
+                    role: submitValues.role,
+                    status: submitValues.status,
+                    full_name: submitValues.fullName,
+                    gender: submitValues.gender,
+                    birthday: submitValues.birthday,
+                    occupation: submitValues.occupation,
+                    identity_number: submitValues.identityNumber,
+                    address: submitValues.address,
+                    bio: submitValues.bio,
+                    avatar: submitValues.avatarFile,
+                });
+
+                await userApi.create(formData);
+
                 toast.success('Tạo người dùng thành công.');
-            } else {
-                console.log('Update', submitValues);
-                toast.success('Cập nhật người dùng thành công.');
+
+                router.push('/admin/users');
+                return;
             }
 
+            // TODO: Update
+            console.log('Update', submitValues);
+
+            toast.success('Cập nhật người dùng thành công.');
+        } catch (error) {
+            toast.error(`Đã xảy ra lỗi: ${(error as Error).message}`);
+        } finally {
             setOpenConfirm(false);
             setSubmitValues(null);
-        } catch {
-            toast.error('Đã xảy ra lỗi.');
-        } finally {
             loading.close();
         }
     };
@@ -252,9 +280,12 @@ export default function UserDetailPage({ userId }: Props) {
 
                 <Card title="Ảnh đại diện">
                     <AvatarUpload
-                        previewUrl={avatarPreview}
+                        value={avatarUrl}
                         onChange={(file) => {
-                            setAvatarPreview(URL.createObjectURL(file));
+                            setValue('avatarFile', file);
+                            setValue('avatarUrl', URL.createObjectURL(file), {
+                                shouldDirty: true,
+                            });
                         }}
                     />
                 </Card>

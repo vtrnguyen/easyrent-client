@@ -97,3 +97,22 @@ export const genderOptions: DropdownOption[] = [
         value: Genders.Other,
     },
 ];
+
+export const validationPatterns = {
+    phoneNumber: /^0\d{9,10}$/,
+    identityNumber: /^\d{12}$/,
+};
+
+export const validationMessages = {
+    phoneNumber: 'Số điện thoại phải gồm 10 hoặc 11 chữ số và bắt đầu bằng số 0',
+    identityNumber: 'CCCD phải gồm đúng 12 chữ số',
+    imageFile: 'Chỉ được tải lên file ảnh (JPG, JPEG, PNG, WEBP, GIF)',
+};
+
+export const allowedImageMimeTypes: ReadonlyArray<string> = [
+    'image/jpeg',
+    'image/jpg',
+    'image/png',
+    'image/webp',
+    'image/gif',
+];

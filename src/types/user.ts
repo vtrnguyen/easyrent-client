@@ -57,3 +57,24 @@ export interface UserSearchResponse {
         totalPages: number;
     };
 }
+
+export interface UserForm {
+    email: string;
+    phoneNumber: string;
+    fullName: string;
+    role: string;
+    status: string;
+    gender: string;
+    birthday: string;
+    address: string;
+    bio: string;
+    occupation: string;
+    identityNumber: string;
+    avatarUrl: string;
+    avatarFile?: File;
+    emailVerified: boolean;
+}
+
+export type CreateUserRequest = Omit<UserForm, 'emailVerified' | 'avatarUrl'> & {
+    avatarFile?: File;
+};

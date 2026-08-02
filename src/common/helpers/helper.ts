@@ -69,7 +69,15 @@ export function toCamelCase(data: any): any {
 
     if (typeof data === 'object' && data !== null) {
         return Object.keys(data).reduce((acc, key) => {
-            acc[camelCase(key)] = toCamelCase(data[key]);
+            const camelKey = camelCase(key);
+
+            let value = toCamelCase(data[key]);
+
+            if (key.endsWith('_url') && typeof value === 'string' && value.startsWith('/storage/')) {
+                value = `${process.env.NEXT_PUBLIC_API_URL}${value}`;
+            }
+
+            acc[camelKey] = value;
 
             return acc;
         }, {} as any);
@@ -133,6 +141,20 @@ export function formatDate(value?: string | Date | null, fallback = '-', locale 
     return date.toLocaleDateString(locale);
 }
 
+export function formatDateForInput(value?: string | Date | null): string {
+    if (!value) {
+        return '';
+    }
+
+    const date = new Date(value);
+
+    if (Number.isNaN(date.getTime())) {
+        return '';
+    }
+
+    return date.toISOString().split('T')[0];
+}
+
 const filterValueResolvers: Record<string, (value: FilterValue) => string> = {
     role: (value) => getRoleValue(value as Roles),
     status: (value) => getStatusValue(value as AccountStatus),
@@ -143,3 +165,27 @@ export const getFilterDisplayValue = (key: string, value: FilterValue): string =
     const resolver = filterValueResolvers[key];
     return resolver ? resolver(value) : String(value);
 };
+
+export function createFormData<T extends Record<string, unknown>>(data: T) {
+    const formData = new FormData();
+
+    Object.entries(data).forEach(([key, value]) => {
+        if (value !== undefined && value !== null) {
+            formData.append(key, value as string | Blob);
+        }
+    });
+
+    return formData;
+}
+
+function buildStorageUrl(value: unknown) {
+    if (typeof value !== 'string') {
+        return value;
+    }
+
+    if (!value.startsWith('/storage/')) {
+        return value;
+    }
+
+    return `${process.env.NEXT_PUBLIC_API_URL}${value}`;
+}
