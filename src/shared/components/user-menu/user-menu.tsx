@@ -7,6 +7,7 @@ import Avatar from '@/shared/components/avatar/avatar';
 
 import { authStorage } from '@/common/helpers/helper';
 import { useAuthStore } from '@/stores/auth.store';
+import ChangePassword from '../change-password/change-password';
 
 export default function UserMenu() {
     const router = useRouter();
@@ -15,6 +16,7 @@ export default function UserMenu() {
     const logout = useAuthStore((state) => state.logout);
 
     const [isOpen, setIsOpen] = useState(false);
+    const [openChangePassword, setOpenChangePassword] = useState(false);
 
     const menuRef = useRef<HTMLDivElement>(null);
 
@@ -44,7 +46,13 @@ export default function UserMenu() {
 
             {isOpen && (
                 <div className="absolute top-full right-0 z-50 mt-2 w-52 rounded-xl border border-slate-200 bg-white py-2 shadow-lg">
-                    <button className="w-full cursor-pointer px-4 py-2 text-left text-sm transition-colors hover:bg-slate-100">
+                    <button
+                        onClick={() => {
+                            setIsOpen(false);
+                            setOpenChangePassword(true);
+                        }}
+                        className="w-full cursor-pointer px-4 py-2 text-left text-sm transition-colors hover:bg-slate-100"
+                    >
                         Đổi mật khẩu
                     </button>
 
@@ -55,6 +63,17 @@ export default function UserMenu() {
                         Đăng xuất
                     </button>
                 </div>
+            )}
+
+            {openChangePassword && (
+                <ChangePassword
+                    open={openChangePassword}
+                    onClose={() => setOpenChangePassword(false)}
+                    onConfirm={async (values) => {
+                        console.log(values);
+                        setOpenChangePassword(false);
+                    }}
+                />
             )}
         </div>
     );

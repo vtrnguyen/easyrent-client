@@ -103,10 +103,18 @@ export const validationPatterns = {
     identityNumber: /^\d{12}$/,
 };
 
+export const passwordValidation = {
+    minLength: 8,
+};
+
 export const validationMessages = {
     phoneNumber: 'Số điện thoại phải gồm 10 hoặc 11 chữ số và bắt đầu bằng số 0',
     identityNumber: 'CCCD phải gồm đúng 12 chữ số',
     imageFile: 'Chỉ được tải lên file ảnh (JPG, JPEG, PNG, WEBP, GIF)',
+    required: 'Không được để trống',
+    passwordMinLength: `Mật khẩu phải có ít nhất ${passwordValidation.minLength} ký tự`,
+    passwordNotMatch: 'Mật khẩu xác nhận không khớp',
+    passwordMustDifferent: 'Mật khẩu mới phải khác mật khẩu hiện tại',
 };
 
 export const allowedImageMimeTypes: ReadonlyArray<string> = [

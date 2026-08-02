@@ -1,4 +1,4 @@
-import { AccountRole, Gender, UserStatus } from "@/common/enums/appEnums";
+import { AccountRole, Gender, UserStatus } from '@/common/enums/appEnums';
 
 export interface LoginRequest {
     identifier: string;
@@ -11,6 +11,12 @@ export interface RegisterRequest {
     password: string;
     phoneNumber: string;
     gender: Gender;
+}
+
+export interface ChangePasswordRequest {
+    currentPassword: string;
+    newPassword: string;
+    confirmNewPassword: string;
 }
 
 export interface AuthData {
