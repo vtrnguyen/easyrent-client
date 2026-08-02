@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Controller, useForm } from 'react-hook-form';
@@ -10,15 +10,22 @@ import AvatarUpload from '@/shared/components/avatar-upload/avatar-upload';
 import Button from '@/shared/components/buttons/button';
 import Card from '@/shared/components/card/card';
 import Checkbox from '@/shared/components/checkbox/checkbox';
-import Select from '@/shared/components/select/select';
 import TextArea from '@/shared/components/textarea/textarea';
 import TextField from '@/shared/components/text-field/text-field';
 
 import { userApi } from '@/api/user.api';
-import { AccountStatus, Genders, Roles } from '@/common/constants/appConstants';
+import {
+    AccountStatus,
+    accountStatusOptions,
+    genderOptions,
+    Genders,
+    roleOptions,
+    Roles,
+} from '@/common/constants/appConstants';
 import useLoadingOverlay from '@/shared/hooks/useLoadingOverlay';
 import { UserForm, userSchema } from '@/validations/user.schema';
 import Confirmation from '@/shared/components/confirmation/confirmation';
+import Dropdown from '@/shared/components/dropdown/dropdown';
 
 interface Props {
     userId?: string;
@@ -104,13 +111,11 @@ export default function UserDetailPage({ userId }: Props) {
         };
     }, [isCreate, userId, loading, reset]);
 
-    // Chạy sau khi form validate thành công
     const onSubmit = (values: UserForm) => {
         setSubmitValues(values);
         setOpenConfirm(true);
     };
 
-    // Chạy khi bấm nút Đồng ý trên Confirmation
     const handleConfirm = async () => {
         if (!submitValues) {
             return;
@@ -137,7 +142,7 @@ export default function UserDetailPage({ userId }: Props) {
     };
 
     return (
-        <>
+        <React.Fragment>
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                 <div className="flex items-center justify-between">
                     <h1 className="text-2xl font-semibold">{isCreate ? 'Tạo người dùng' : 'Cập nhật người dùng'}</h1>
@@ -155,25 +160,32 @@ export default function UserDetailPage({ userId }: Props) {
                             {...register('phoneNumber')}
                         />
 
-                        <Select
-                            label="Vai trò"
-                            error={errors.role?.message}
-                            options={[
-                                { label: 'Khách thuê', value: Roles.Tenant },
-                                { label: 'Chủ nhà', value: Roles.Landlord },
-                                { label: 'Quản trị viên', value: Roles.Admin },
-                            ]}
-                            {...register('role')}
+                        <Controller
+                            name="role"
+                            control={control}
+                            render={({ field }) => (
+                                <Dropdown
+                                    label="Vai trò"
+                                    error={errors.role?.message}
+                                    value={field.value}
+                                    onChange={(value) => field.onChange(value)}
+                                    options={roleOptions}
+                                />
+                            )}
                         />
 
-                        <Select
-                            label="Trạng thái"
-                            error={errors.status?.message}
-                            options={[
-                                { label: 'Hoạt động', value: AccountStatus.Active },
-                                { label: 'Khóa', value: AccountStatus.Inactive },
-                            ]}
-                            {...register('status')}
+                        <Controller
+                            name="status"
+                            control={control}
+                            render={({ field }) => (
+                                <Dropdown
+                                    label="Trạng thái"
+                                    error={errors.status?.message}
+                                    value={field.value}
+                                    onChange={(value) => field.onChange(value)}
+                                    options={accountStatusOptions}
+                                />
+                            )}
                         />
                     </div>
 
@@ -199,15 +211,18 @@ export default function UserDetailPage({ userId }: Props) {
                     <div className="grid grid-cols-2 gap-5">
                         <TextField label="Họ và tên" error={errors.fullName?.message} {...register('fullName')} />
 
-                        <Select
-                            label="Giới tính"
-                            error={errors.gender?.message}
-                            options={[
-                                { label: 'Nam', value: Genders.Male },
-                                { label: 'Nữ', value: Genders.Female },
-                                { label: 'Khác', value: Genders.Other },
-                            ]}
-                            {...register('gender')}
+                        <Controller
+                            name="gender"
+                            control={control}
+                            render={({ field }) => (
+                                <Dropdown
+                                    label="Giới tính"
+                                    error={errors.gender?.message}
+                                    value={field.value}
+                                    onChange={(value) => field.onChange(value)}
+                                    options={genderOptions}
+                                />
+                            )}
                         />
 
                         <TextField
@@ -259,6 +274,6 @@ export default function UserDetailPage({ userId }: Props) {
                 }}
                 onConfirm={handleConfirm}
             />
-        </>
+        </React.Fragment>
     );
 }

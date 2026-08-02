@@ -1,3 +1,5 @@
+import { DropdownOption } from '@/shared/components/dropdown/dropdown';
+
 export const paginatedLimit = 100;
 export const animationDuration = 250;
 
@@ -54,3 +56,44 @@ export enum AccountStatus {
     Active = 'active',
     Inactive = 'inactive',
 }
+
+export const roleOptions: DropdownOption[] = [
+    {
+        label: 'Khách thuê',
+        value: Roles.Tenant,
+    },
+    {
+        label: 'Chủ nhà',
+        value: Roles.Landlord,
+    },
+    {
+        label: 'Quản trị viên',
+        value: Roles.Admin,
+    },
+];
+
+export const accountStatusOptions: DropdownOption[] = [
+    {
+        label: 'Hoạt động',
+        value: AccountStatus.Active,
+    },
+    {
+        label: 'Khóa',
+        value: AccountStatus.Inactive,
+    },
+];
+
+export const genderOptions: DropdownOption[] = [
+    {
+        label: 'Nam',
+        value: Genders.Male,
+    },
+    {
+        label: 'Nữ',
+        value: Genders.Female,
+    },
+    {
+        label: 'Khác',
+        value: Genders.Other,
+    },
+];

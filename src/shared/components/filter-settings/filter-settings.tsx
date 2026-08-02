@@ -4,7 +4,6 @@ import { useState } from 'react';
 
 import Dialog from '../dialog/dialog';
 import TextField from '../text-field/text-field';
-import Select from '../select/select';
 import DateRangeField from '../date-range-field/date-range-field';
 import Button from '../buttons/button';
 import TextArea from '../textarea/textarea';
@@ -13,6 +12,7 @@ import { DateRangeValue, FilterCondition, FilterConfig, FilterValue } from '@/ty
 import { MdClear } from 'react-icons/md';
 import { FaMinus, FaPlus } from 'react-icons/fa';
 import { FilterLogics } from '@/common/constants/appConstants';
+import Dropdown from '../dropdown/dropdown';
 
 interface FilterSettingsProps {
     open: boolean;
@@ -140,11 +140,11 @@ export default function FilterSettings({
 
             case 'select':
                 return (
-                    <Select
+                    <Dropdown
                         label={filter.label}
                         options={filter.options ?? []}
                         value={typeof item.value === 'string' ? item.value : ''}
-                        onChange={(e) => onChange(e.target.value)}
+                        onChange={(value) => onChange(value)}
                     />
                 );
 
@@ -275,14 +275,14 @@ export default function FilterSettings({
                         <div className="flex items-end gap-3">
                             <div className="flex-1">
                                 {!pendingFilter ? (
-                                    <Select
+                                    <Dropdown
                                         placeholder="Chọn field"
                                         value=""
                                         options={filters.map((filter) => ({
                                             label: filter.label,
                                             value: filter.key,
                                         }))}
-                                        onChange={(e) => handleSelectField(e.target.value)}
+                                        onChange={(value) => handleSelectField(value)}
                                     />
                                 ) : (
                                     pendingConfig && renderFilterInput(pendingConfig, pendingFilter, updatePendingValue)

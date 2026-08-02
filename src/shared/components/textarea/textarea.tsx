@@ -38,7 +38,7 @@ const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(function TextAre
 
             <div
                 className={clsx(
-                    `flex items-start gap-3 rounded-xl border border-slate-200 bg-white px-4 py-3 shadow-sm transition focus-within:border-slate-400 focus-within:ring-2 focus-within:ring-slate-200`,
+                    `flex items-start gap-3 rounded-lg border border-slate-200 bg-white px-4 py-3 shadow-sm transition focus-within:border-slate-400 focus-within:ring-2 focus-within:ring-slate-200`,
                     error && `border-rose-400 focus-within:border-rose-500 focus-within:ring-rose-100`,
                     className,
                 )}
