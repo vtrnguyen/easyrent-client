@@ -1,32 +1,41 @@
-"use client";
+'use client';
 
-import { useAuthStore } from "@/stores/auth.store";
-import { useRouter } from "next/navigation";
-import Button from "../components/buttons/button";
-import { authStorage } from "@/common/helpers/helper";
+import { useAuthStore } from '@/stores/auth.store';
+import { useRouter } from 'next/navigation';
+import { getHomeRoute } from '@/common/helpers/helper';
+import Image from 'next/image';
+import UserMenu from '../components/user-menu/user-menu';
 
 export default function TenantHeader() {
     const router = useRouter();
     const user = useAuthStore((state) => state.user);
-    const logout = useAuthStore((state) => state.logout);
 
-    const handleLogout = () => {
-        authStorage.clear();
-        logout();
-        router.replace("/auth/login");
+    const handleGoHome = () => {
+        router.push(getHomeRoute(user?.role));
     };
 
     return (
-        <header className="border-b p-4 flex items-center justify-between gap-4">
-            <div>
-                <h1 className="font-semibold">
-                    Xin chào
-                </h1>
-                <div className="text-sm text-zinc-500">
-                    {user?.userId}
+        <header className="flex h-20 items-center justify-between border-b border-slate-200 bg-white px-12">
+            <button
+                type="button"
+                onClick={handleGoHome}
+                className="flex cursor-pointer items-center gap-1 text-xl font-bold text-slate-900"
+                aria-label="Về trang chủ"
+            >
+                <div className="relative h-20 w-20">
+                    <Image
+                        src="/easyrent_logo_without_text.png"
+                        alt="EasyRent"
+                        fill
+                        className="object-contain"
+                        priority
+                    />
                 </div>
-            </div>
-            <Button onClick={handleLogout}>Đăng xuất</Button>
+
+                <p className="text-green-500">EasyRent</p>
+            </button>
+
+            <UserMenu />
         </header>
     );
 }

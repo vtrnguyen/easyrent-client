@@ -3,12 +3,14 @@ import { LuDatabaseBackup } from 'react-icons/lu';
 
 import { SidebarMenu } from '@/types/sidebar';
 import { appRoutes } from '@/common/constants/appConstants';
+import { MdOutlineHomeWork } from 'react-icons/md';
+import { HiBuildingOffice2 } from 'react-icons/hi2';
 
 export const adminMenus: SidebarMenu[] = [
     {
         icon: FiHome,
         text: 'Dashboard',
-        destination: '/admin',
+        destination: `/${appRoutes.admin}`,
     },
     {
         icon: FiUsers,
@@ -18,6 +20,22 @@ export const adminMenus: SidebarMenu[] = [
                 icon: FiUsers,
                 text: 'Danh sách người dùng',
                 destination: `/${appRoutes.admin}/${appRoutes.users}`,
+            },
+        ],
+    },
+    {
+        icon: MdOutlineHomeWork,
+        text: 'Quản lý chỗ ở',
+        submenu: [
+            {
+                icon: HiBuildingOffice2,
+                text: 'Danh mục chỗ ở',
+                destination: `/${appRoutes.admin}/${appRoutes.propertyTypes}`,
+            },
+            {
+                icon: MdOutlineHomeWork,
+                text: 'Danh sách chỗ ở',
+                destination: `/${appRoutes.admin}/${appRoutes.properties}`,
             },
         ],
     },

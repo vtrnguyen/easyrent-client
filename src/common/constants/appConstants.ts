@@ -17,6 +17,7 @@ export const appRoutes = {
     backupAndRestore: 'backupandrestore',
 
     landlord: 'landlord',
+    propertyTypes: 'property-types',
     properties: 'properties',
     posts: 'posts',
 
