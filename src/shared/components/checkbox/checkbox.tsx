@@ -22,7 +22,7 @@ const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(function Checkbox(
             type="checkbox"
             disabled={isDisable}
             className={clsx(
-                'rounded border-slate-300 text-slate-900 shadow-sm transition outline-none focus:ring-0 focus:ring-offset-0 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50',
+                'cursor-pointer rounded border-gray-300 text-slate-900 transition outline-none focus:outline-none disabled:cursor-not-allowed disabled:opacity-50',
                 sizeClasses[checkBoxSize],
                 className,
             )}

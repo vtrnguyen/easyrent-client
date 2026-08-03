@@ -17,9 +17,9 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 const sizeClasses: Record<ButtonSize, string> = {
-    sm: 'h-8 min-w-20 px-4 text-sm',
-    md: 'h-10 min-w-24 px-5 text-sm',
-    lg: 'h-12 min-w-28 px-6 text-base',
+    sm: 'h-8 min-w-22 px-4 text-sm',
+    md: 'h-10 min-w-26 px-5 text-sm',
+    lg: 'h-12 min-w-30 px-6 text-base',
 };
 
 const variantClasses: Record<ButtonVariant, string> = {

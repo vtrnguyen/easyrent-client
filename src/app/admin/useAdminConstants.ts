@@ -4,7 +4,7 @@ import { LuDatabaseBackup } from 'react-icons/lu';
 import { SidebarMenu } from '@/types/sidebar';
 import { appRoutes } from '@/common/constants/appConstants';
 import { MdOutlineHomeWork } from 'react-icons/md';
-import { HiBuildingOffice2 } from 'react-icons/hi2';
+import { FaRankingStar } from 'react-icons/fa6';
 
 export const adminMenus: SidebarMenu[] = [
     {
@@ -28,9 +28,9 @@ export const adminMenus: SidebarMenu[] = [
         text: 'Quản lý chỗ ở',
         submenu: [
             {
-                icon: HiBuildingOffice2,
-                text: 'Danh mục chỗ ở',
-                destination: `/${appRoutes.admin}/${appRoutes.propertyTypes}`,
+                icon: FaRankingStar,
+                text: 'Quản lý tiện ích',
+                destination: `/${appRoutes.admin}/${appRoutes.utilities}`,
             },
             {
                 icon: MdOutlineHomeWork,
