@@ -273,7 +273,7 @@ export default function PropertyDetailPage({ propertyId }: Props) {
                         <p className="mt-1 text-sm text-slate-500">Nhập đầy đủ thông tin để quản lý tin đăng.</p>
                     </div>
 
-                    <Button type="submit" variant="blue">
+                    <Button type="submit" variant="primary">
                         {isSubmitting ? 'Đang lưu...' : 'Lưu'}
                     </Button>
                 </div>
