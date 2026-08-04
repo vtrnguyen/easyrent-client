@@ -1,21 +1,17 @@
-"use client";
+'use client';
 
-import { appRoutes } from "@/common/constants/appConstants";
-import { AccountRole } from "@/common/enums/appEnums";
-import { getHomeRoute } from "@/common/helpers/helper";
-import { useAuthStore } from "@/stores/auth.store";
-import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { appRoutes, Roles } from '@/common/constants/appConstants';
+import { getHomeRoute } from '@/common/helpers/helper';
+import { useAuthStore } from '@/stores/auth.store';
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 
 interface AuthGuardProps {
-    allowedRoles: AccountRole[];
+    allowedRoles: Roles[];
     children: React.ReactNode;
 }
 
-export default function AuthGuard({
-    allowedRoles,
-    children,
-}: AuthGuardProps) {
+export default function AuthGuard({ allowedRoles, children }: AuthGuardProps) {
     const router = useRouter();
 
     const user = useAuthStore((state) => state.user);
@@ -46,4 +42,4 @@ export default function AuthGuard({
     }
 
     return children;
-};
+}

@@ -1,11 +1,5 @@
-import {
-    AccountStatus,
-    FilterLogics,
-    Genders,
-    Roles,
-    SearchOperator,
-    SortOrder,
-} from '@/common/constants/appConstants';
+import { AccountStatus, Genders, Roles } from '@/common/constants/appConstants';
+import { SearchOperator, SortOrder } from './search';
 
 export interface User {
     id: string;
@@ -36,14 +30,6 @@ export interface UserSearchFilter {
 export interface UserSearchSort {
     field: string;
     direction: SortOrder;
-}
-
-export interface UserSearchRequest {
-    page: number;
-    limit: number;
-    filter_logic: FilterLogics;
-    filters: UserSearchFilter[];
-    sorts: UserSearchSort[];
 }
 
 export interface UserSearchResponse {

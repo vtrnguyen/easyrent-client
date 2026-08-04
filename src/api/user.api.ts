@@ -2,10 +2,11 @@ import { api } from '@/services/axios';
 
 import { toCamelCase } from '@/common/helpers/helper';
 import { PaginationResponse, SuccessResponse } from '@/types/api';
-import { User, UserSearchRequest } from '@/types/user';
+import { User } from '@/types/user';
+import { SearchRequest } from '@/types/search';
 
 export const userApi = {
-    async search(payload: UserSearchRequest): Promise<PaginationResponse<User>> {
+    async search(payload: SearchRequest): Promise<PaginationResponse<User>> {
         const response = await api.post<SuccessResponse<PaginationResponse<User>>>('/user/search', payload);
         return toCamelCase(response.data.data) as PaginationResponse<User>;
     },

@@ -66,14 +66,7 @@ export default function UserMenu() {
             )}
 
             {openChangePassword && (
-                <ChangePassword
-                    open={openChangePassword}
-                    onClose={() => setOpenChangePassword(false)}
-                    onConfirm={async (values) => {
-                        console.log(values);
-                        setOpenChangePassword(false);
-                    }}
-                />
+                <ChangePassword open={openChangePassword} onClose={() => setOpenChangePassword(false)} />
             )}
         </div>
     );

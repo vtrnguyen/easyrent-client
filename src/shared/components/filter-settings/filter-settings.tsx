@@ -11,8 +11,8 @@ import TextArea from '../textarea/textarea';
 import { DateRangeValue, FilterCondition, FilterConfig, FilterValue } from '@/types/filter';
 import { MdClear } from 'react-icons/md';
 import { FaMinus, FaPlus } from 'react-icons/fa';
-import { FilterLogics } from '@/common/constants/appConstants';
 import Dropdown from '../dropdown/dropdown';
+import { FilterLogics } from '@/types/search';
 
 interface FilterSettingsProps {
     open: boolean;

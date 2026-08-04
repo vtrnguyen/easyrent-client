@@ -2,8 +2,15 @@ import snakeCase from 'lodash.snakecase';
 import camelCase from 'lodash.camelcase';
 
 import { AuthData } from '@/types/auth';
-import { AccountStatus, appRoutes, Genders, localStorageKeys, Roles } from '../constants/appConstants';
-import { AccountRole } from '../enums/appEnums';
+import {
+    AccountStatus,
+    appRoutes,
+    Genders,
+    localStorageKeys,
+    PropertyStatus,
+    PropertyTypes,
+    Roles,
+} from '../constants/appConstants';
 import { ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import clsx from 'clsx';
@@ -33,54 +40,62 @@ export const authStorage = {
     },
 };
 
-export function getHomeRoute(role?: AccountRole) {
+export function getHomeRoute(role?: Roles) {
     switch (role) {
-        case AccountRole.Admin:
+        case Roles.Admin:
             return `/${appRoutes.admin}`;
-        case AccountRole.Landlord:
+        case Roles.Landlord:
             return `/${appRoutes.landlord}`;
-        case AccountRole.Tenant:
+        case Roles.Tenant:
             return `/${appRoutes.home}`;
         default:
             return `/${appRoutes.home}`;
     }
 }
 
-export function toSnakeCase(data: any): any {
+export function toSnakeCase(data: unknown): unknown {
     if (Array.isArray(data)) {
         return data.map(toSnakeCase);
     }
 
     if (data !== null && typeof data === 'object') {
-        return Object.keys(data).reduce((acc, key) => {
-            acc[snakeCase(key)] = toSnakeCase(data[key]);
+        return Object.keys(data).reduce(
+            (acc, key) => {
+                const record = data as Record<string, unknown>;
+                acc[snakeCase(key)] = toSnakeCase(record[key]);
 
-            return acc;
-        }, {} as any);
+                return acc;
+            },
+            {} as Record<string, unknown>,
+        );
     }
 
     return data;
 }
 
-export function toCamelCase(data: any): any {
+export function toCamelCase(data: unknown): unknown {
     if (Array.isArray(data)) {
         return data.map(toCamelCase);
     }
 
     if (typeof data === 'object' && data !== null) {
-        return Object.keys(data).reduce((acc, key) => {
-            const camelKey = camelCase(key);
+        return Object.keys(data).reduce(
+            (acc, key) => {
+                const camelKey = camelCase(key);
+                const record = data as Record<string, unknown>;
 
-            let value = toCamelCase(data[key]);
+                let value = toCamelCase(record[key]);
 
-            if (key.endsWith('_url') && typeof value === 'string' && value.startsWith('/storage/')) {
-                value = `${process.env.NEXT_PUBLIC_API_URL}${value}`;
-            }
+                if (key.endsWith('_url') && typeof value === 'string' && value.startsWith('/storage/')) {
+                    value = `${process.env.NEXT_PUBLIC_API_URL}${value}`;
+                }
 
-            acc[camelKey] = value;
+                acc[camelKey] = value;
 
-            return acc;
-        }, {} as any);
+                return acc;
+            },
+            {} as Record<string, unknown>,
+        );
     }
 
     return data;
@@ -122,6 +137,38 @@ export function getGenderValue(gender: Genders): string {
             return 'Nữ';
         case Genders.Other:
             return 'Khác';
+        default:
+            return '';
+    }
+}
+
+export function getPropertyTypeValue(type: PropertyTypes): string {
+    switch (type) {
+        case PropertyTypes.House:
+            return 'Nhà';
+        case PropertyTypes.RentalRoom:
+            return 'Phòng trọ';
+        case PropertyTypes.Apartment:
+            return 'Căn hộ';
+        case PropertyTypes.Flat:
+            return 'Căn hộ dịch vụ';
+        default:
+            return '';
+    }
+}
+
+export function getPropertyStatusValue(status: PropertyStatus): string {
+    switch (status) {
+        case PropertyStatus.Available:
+            return 'Đang trống';
+        case PropertyStatus.Reserved:
+            return 'Đã đặt';
+        case PropertyStatus.Rented:
+            return 'Đang cho thuê';
+        case PropertyStatus.Hidden:
+            return 'Đã ẩn';
+        case PropertyStatus.Maintenance:
+            return 'Đang bảo trì';
         default:
             return '';
     }
@@ -171,21 +218,19 @@ export function createFormData<T extends Record<string, unknown>>(data: T) {
 
     Object.entries(data).forEach(([key, value]) => {
         if (value !== undefined && value !== null) {
-            formData.append(key, value as string | Blob);
+            if (Array.isArray(value)) {
+                value.forEach((item) => {
+                    if (item !== undefined && item !== null) {
+                        formData.append(key, item instanceof Blob ? item : String(item));
+                    }
+                });
+
+                return;
+            }
+
+            formData.append(key, value instanceof Blob ? value : String(value));
         }
     });
 
     return formData;
-}
-
-function buildStorageUrl(value: unknown) {
-    if (typeof value !== 'string') {
-        return value;
-    }
-
-    if (!value.startsWith('/storage/')) {
-        return value;
-    }
-
-    return `${process.env.NEXT_PUBLIC_API_URL}${value}`;
 }

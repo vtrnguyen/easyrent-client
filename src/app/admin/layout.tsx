@@ -1,12 +1,11 @@
 'use client';
 
-import { AccountRole } from '@/common/enums/appEnums';
-
 import AuthGuard from '@/shared/guards/auth-guard';
 import Header from '@/shared/layouts/header';
 import Sidebar from '@/shared/layouts/sidebar';
 
 import { adminMenus } from './useAdminConstants';
+import { Roles } from '@/common/constants/appConstants';
 
 interface LayoutProps {
     children: React.ReactNode;
@@ -14,7 +13,7 @@ interface LayoutProps {
 
 export default function Layout({ children }: LayoutProps) {
     return (
-        <AuthGuard allowedRoles={[AccountRole.Admin]}>
+        <AuthGuard allowedRoles={[Roles.Admin]}>
             <div className="flex h-screen flex-col overflow-hidden">
                 <Header />
 

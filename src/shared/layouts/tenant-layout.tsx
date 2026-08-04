@@ -1,6 +1,6 @@
 'use client';
 
-import { AccountRole } from '@/common/enums/appEnums';
+import { Roles } from '@/common/constants/appConstants';
 import AuthGuard from '../guards/auth-guard';
 import TenantHeader from './tenant-header';
 
@@ -10,7 +10,7 @@ interface TenantLayoutProps {
 
 export default function TenantLayout({ children }: TenantLayoutProps) {
     return (
-        <AuthGuard allowedRoles={[AccountRole.Tenant]}>
+        <AuthGuard allowedRoles={[Roles.Tenant]}>
             <div className="flex min-h-screen flex-col bg-[#f7f5f2] text-slate-900">
                 <TenantHeader />
 

@@ -25,22 +25,6 @@ export const appRoutes = {
     dashboard: 'dashboard',
 };
 
-export enum SortOrder {
-    Ascending = 'asc',
-    Descending = 'desc',
-}
-
-export enum SearchOperator {
-    Equals = 'equals',
-    Contains = 'contains',
-    In = 'in',
-}
-
-export enum FilterLogics {
-    And = 'and',
-    Or = 'or',
-}
-
 export enum Genders {
     Male = 'male',
     Female = 'female',
@@ -56,6 +40,21 @@ export enum Roles {
 export enum AccountStatus {
     Active = 'active',
     Inactive = 'inactive',
+}
+
+export enum PropertyTypes {
+    House = 'house',
+    RentalRoom = 'rental_room',
+    Apartment = 'apartment',
+    Flat = 'flat',
+}
+
+export enum PropertyStatus {
+    Available = 'available',
+    Reserved = 'reserved',
+    Rented = 'rented',
+    Hidden = 'hidden',
+    Maintenance = 'maintenance',
 }
 
 export const roleOptions: DropdownOption[] = [

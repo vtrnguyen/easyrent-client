@@ -4,7 +4,6 @@ import Link from 'next/link';
 import { FiLock, FiMail, FiMapPin, FiPhone, FiUser } from 'react-icons/fi';
 
 import { authApi } from '@/api/auth.api';
-import { Gender } from '@/common/enums/appEnums';
 import { authStorage, getHomeRoute } from '@/common/helpers/helper';
 import Button from '@/shared/components/buttons/button';
 import Select from '@/shared/components/select/select';
@@ -15,6 +14,7 @@ import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import TextField from '@/shared/components/text-field/text-field';
+import { Genders } from '@/common/constants/appConstants';
 
 export default function RegisterPage() {
     const router = useRouter();
@@ -26,7 +26,7 @@ export default function RegisterPage() {
         formState: { errors, isSubmitting },
     } = useForm<RegisterSchema>({
         resolver: zodResolver(registerSchema),
-        defaultValues: { gender: Gender.Other },
+        defaultValues: { gender: Genders.Other },
     });
 
     const onSubmit = async (values: RegisterSchema) => {

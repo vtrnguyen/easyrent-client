@@ -1,4 +1,4 @@
-import { AccountRole, Gender, UserStatus } from '@/common/enums/appEnums';
+import { AccountStatus, Genders, Roles } from '@/common/constants/appConstants';
 
 export interface LoginRequest {
     identifier: string;
@@ -10,7 +10,7 @@ export interface RegisterRequest {
     email: string;
     password: string;
     phoneNumber: string;
-    gender: Gender;
+    gender: Genders;
 }
 
 export interface ChangePasswordRequest {
@@ -24,7 +24,7 @@ export interface AuthData {
     userId: string;
     fullName: string;
     avatarUrl?: string;
-    role: AccountRole;
-    status: UserStatus;
+    role: Roles;
+    status: AccountStatus;
     lastLoginAt?: string;
 }

@@ -1,14 +1,14 @@
 'use client';
 
-import { AccountRole } from '@/common/enums/appEnums';
 import AuthGuard from '@/shared/guards/auth-guard';
 import Header from '@/shared/layouts/header';
 import Sidebar from '@/shared/layouts/sidebar';
 import { landlordMenus } from './useLandlordConstants';
+import { Roles } from '@/common/constants/appConstants';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
     return (
-        <AuthGuard allowedRoles={[AccountRole.Landlord]}>
+        <AuthGuard allowedRoles={[Roles.Landlord]}>
             <div className="flex h-screen flex-col overflow-hidden">
                 <Header />
 

@@ -1,9 +1,9 @@
 'use client';
 
-import { SortOrder } from '@/common/constants/appConstants';
 import { ReactNode } from 'react';
 import { FiChevronDown, FiChevronUp } from 'react-icons/fi';
 import Checkbox from '../checkbox/checkbox';
+import { SortOrder } from '@/types/search';
 
 export interface TableSort {
     fieldId: string;

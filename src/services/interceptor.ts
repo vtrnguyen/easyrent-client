@@ -1,6 +1,7 @@
 import { authStorage, getHomeRoute, toCamelCase, toSnakeCase } from '@/common/helpers/helper';
 import { api } from './axios';
 import toast from 'react-hot-toast';
+import { appRoutes } from '@/common/constants/appConstants';
 
 function isFormData(value: unknown): value is FormData {
     return typeof FormData !== 'undefined' && value instanceof FormData;
@@ -39,7 +40,12 @@ api.interceptors.response.use(
         const status = error.response?.status;
         const auth = authStorage.get();
 
-        if ((status === 401 || status === 403) && auth?.accessToken) {
+        if (status === 401) {
+            authStorage.clear();
+            window.location.href = `/${appRoutes.auth}/${appRoutes.login}`;
+        }
+
+        if (status === 403 && auth?.accessToken) {
             window.location.href = getHomeRoute(auth.role);
         }
 

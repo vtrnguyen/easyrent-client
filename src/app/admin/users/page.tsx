@@ -10,7 +10,7 @@ import Table from '@/shared/components/table/table';
 
 import { userApi } from '@/api/user.api';
 import { User, UserSearchFilter, UserSearchSort } from '@/types/user';
-import { FilterLogics, paginatedLimit, SearchOperator } from '@/common/constants/appConstants';
+import { paginatedLimit } from '@/common/constants/appConstants';
 import FilterSettings from '@/shared/components/filter-settings/filter-settings';
 import { useUsersConstants } from './useUsersConstants';
 import { FilterCondition } from '@/types/filter';
@@ -18,6 +18,7 @@ import Badge from '@/shared/components/badge/badge';
 import { getFilterDisplayValue } from '@/common/helpers/helper';
 import { useRouter } from 'next/navigation';
 import useLoadingOverlay from '@/shared/hooks/useLoadingOverlay';
+import { FilterLogics, SearchOperator } from '@/types/search';
 
 export default function AdminUsersPage() {
     const router = useRouter();
