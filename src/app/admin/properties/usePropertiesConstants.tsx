@@ -110,7 +110,7 @@ export const usePropertiesConstants = () => {
             fieldId: 'type',
             header: 'Loại',
             sortable: true,
-            renderCell: (property) => property.type,
+            renderCell: (property) => getPropertyTypeValue(property.type as PropertyTypes),
         },
         {
             fieldId: 'area',
@@ -129,11 +129,27 @@ export const usePropertiesConstants = () => {
                     maximumFractionDigits: 0,
                 }).format(property.price),
         },
+        // {
+        //     fieldId: 'utilities',
+        //     header: 'Tiện ích',
+        //     sortable: false,
+        //     renderCell: (property) => (
+        //         <div className="flex flex-wrap gap-1">
+        //             {property.utilities.map((utility) => (
+        //                 <Badge key={utility} variant="info">
+        //                     {utility}
+        //                 </Badge>
+        //             ))}
+        //         </div>
+        //     ),
+        // },
         {
             fieldId: 'status',
             header: 'Trạng thái',
             sortable: true,
-            renderCell: (property) => <Badge variant={getStatusVariant(property.status)}>{property.status}</Badge>,
+            renderCell: (property) => (
+                <Badge variant={getStatusVariant(property.status)}>{getPropertyStatusValue(property.status)}</Badge>
+            ),
         },
         {
             fieldId: 'created_at',
