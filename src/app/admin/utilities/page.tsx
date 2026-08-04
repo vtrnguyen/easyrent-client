@@ -56,7 +56,12 @@ export default function AdminUtilitiesPage() {
                 <Button icon={<FiPlus />} variant="blue" onClick={() => console.log('Create utility')}>
                     Tạo mới
                 </Button>
-                <Button icon={<FiTrash2 />} variant="primary" onClick={() => console.log('Delete utility')}>
+                <Button
+                    icon={<FiTrash2 />}
+                    variant="primary"
+                    disabled={selectedIds.length === 0}
+                    onClick={() => console.log('Delete utility')}
+                >
                     Xóa
                 </Button>
             </div>

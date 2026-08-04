@@ -11,7 +11,7 @@ import Image from 'next/image';
 import { propertyApi } from '@/api/property.api';
 import { utilityApi } from '@/api/utility.api';
 import { PropertyStatus, PropertyTypes } from '@/common/constants/appConstants';
-import { createFormData, getPropertyStatusValue, getPropertyTypeValue } from '@/common/helpers/helper';
+import { createFormData } from '@/common/helpers/helper';
 import Button from '@/shared/components/buttons/button';
 import Card from '@/shared/components/card/card';
 import Confirmation from '@/shared/components/confirmation/confirmation';
@@ -22,6 +22,7 @@ import TextField from '@/shared/components/text-field/text-field';
 import { Utility } from '@/types/utility';
 import { propertySchema } from '@/validations/property.schema';
 import { z } from 'zod';
+import { propertyStatusOptions, propertyTypeOptions } from '../usePropertiesConstants';
 
 interface Props {
     propertyId?: string;
@@ -29,32 +30,6 @@ interface Props {
 
 type PropertyFormInput = z.input<typeof propertySchema>;
 type PropertyFormValues = z.output<typeof propertySchema>;
-
-const propertyTypeOptions = Object.values(PropertyTypes).map((value) => ({
-    value,
-    label:
-        value === PropertyTypes.House
-            ? getPropertyTypeValue(PropertyTypes.House)
-            : value === PropertyTypes.RentalRoom
-              ? getPropertyTypeValue(PropertyTypes.RentalRoom)
-              : value === PropertyTypes.Apartment
-                ? getPropertyTypeValue(PropertyTypes.Apartment)
-                : getPropertyTypeValue(PropertyTypes.Flat),
-}));
-
-const propertyStatusOptions = Object.values(PropertyStatus).map((value) => ({
-    value,
-    label:
-        value === PropertyStatus.Available
-            ? getPropertyStatusValue(PropertyStatus.Available)
-            : value === PropertyStatus.Reserved
-              ? getPropertyStatusValue(PropertyStatus.Reserved)
-              : value === PropertyStatus.Rented
-                ? getPropertyStatusValue(PropertyStatus.Rented)
-                : value === PropertyStatus.Hidden
-                  ? getPropertyStatusValue(PropertyStatus.Hidden)
-                  : getPropertyStatusValue(PropertyStatus.Maintenance),
-}));
 
 export default function PropertyDetailPage({ propertyId }: Props) {
     const isCreate = !propertyId;
@@ -392,14 +367,14 @@ export default function PropertyDetailPage({ propertyId }: Props) {
 
                         <TextField
                             type="number"
-                            label="Giá điện"
+                            label="Giá điện (VND/kWh)"
                             error={errors.electricityPrice?.message}
                             {...register('electricityPrice')}
                         />
 
                         <TextField
                             type="number"
-                            label="Giá nước"
+                            label="Giá nước (VND/m³)"
                             error={errors.waterPrice?.message}
                             {...register('waterPrice')}
                         />
