@@ -21,6 +21,8 @@ export const appRoutes = {
     utilities: 'utilities',
     posts: 'posts',
 
+    create: 'create',
+
     home: '',
     dashboard: 'dashboard',
 };

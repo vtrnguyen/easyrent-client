@@ -14,7 +14,7 @@ import FilterSettings from '@/shared/components/filter-settings/filter-settings'
 import Pagination from '@/shared/components/pagination/pagination';
 import Table from '@/shared/components/table/table';
 import useLoadingOverlay from '@/shared/hooks/useLoadingOverlay';
-import { paginatedLimit } from '@/common/constants/appConstants';
+import { appRoutes, paginatedLimit } from '@/common/constants/appConstants';
 import { getFilterDisplayValue } from '@/common/helpers/helper';
 import { FilterCondition } from '@/types/filter';
 import { FilterLogics, SearchOperator, SearchRequest, SearchSort } from '@/types/search';
@@ -76,7 +76,7 @@ export default function AdminPropertiesPage() {
 
     const handleNavigateToPropertyPage = useCallback(
         (propertyId: string) => {
-            router.push(`/admin/properties/${propertyId}`);
+            router.push(`/${appRoutes.admin}/${appRoutes.properties}/${propertyId}`);
         },
         [router],
     );
@@ -105,10 +105,7 @@ export default function AdminPropertiesPage() {
     return (
         <section className="space-y-4">
             <div className="flex flex-wrap items-center justify-between gap-3">
-                <div>
-                    <h1 className="text-2xl font-semibold text-slate-900">Quản lý chỗ ở</h1>
-                    <p className="mt-1 text-sm text-slate-500">Tìm kiếm, xem chi tiết, cập nhật và xóa tin đăng.</p>
-                </div>
+                <h1 className="text-2xl font-semibold text-slate-900">Quản lý chỗ ở</h1>
 
                 <div className="flex flex-wrap items-center justify-end gap-2">
                     {searchConditions.map((condition) => {
@@ -136,7 +133,11 @@ export default function AdminPropertiesPage() {
             </div>
 
             <div className="flex flex-wrap items-center gap-2">
-                <Button icon={<FiPlus />} variant="blue" onClick={() => router.push('/admin/properties/create')}>
+                <Button
+                    icon={<FiPlus />}
+                    variant="blue"
+                    onClick={() => router.push(`/${appRoutes.admin}/${appRoutes.properties}/${appRoutes.create}`)}
+                >
                     Tạo mới
                 </Button>
 
