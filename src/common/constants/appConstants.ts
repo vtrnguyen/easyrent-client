@@ -126,3 +126,21 @@ export const allowedImageMimeTypes: ReadonlyArray<string> = [
     'image/webp',
     'image/gif',
 ];
+
+export const allowedLanguages: DropdownOption[] = [
+    {
+        label: 'Tiếng Việt',
+        value: 'vi',
+        disabled: false,
+    },
+    {
+        label: 'English',
+        value: 'en',
+        disabled: false,
+    },
+    {
+        label: '日本語',
+        value: 'ja',
+        disabled: true,
+    },
+];

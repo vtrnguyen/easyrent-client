@@ -11,7 +11,7 @@ import Image from 'next/image';
 import { propertyApi } from '@/api/property.api';
 import { utilityApi } from '@/api/utility.api';
 import { appRoutes, PropertyStatus, PropertyTypes } from '@/common/constants/appConstants';
-import { createFormData } from '@/common/helpers/helper';
+import { createFormData, propertyTypeOptions } from '@/common/helpers/helper';
 import Button from '@/shared/components/buttons/button';
 import Card from '@/shared/components/card/card';
 import Confirmation from '@/shared/components/confirmation/confirmation';
@@ -22,7 +22,7 @@ import TextField from '@/shared/components/text-field/text-field';
 import { Utility } from '@/types/utility';
 import { propertySchema } from '@/validations/property.schema';
 import { z } from 'zod';
-import { propertyStatusOptions, propertyTypeOptions } from '../usePropertiesConstants';
+import { propertyStatusOptions } from '../usePropertiesConstants';
 
 interface Props {
     propertyId?: string;

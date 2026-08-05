@@ -234,3 +234,29 @@ export function createFormData<T extends Record<string, unknown>>(data: T) {
 
     return formData;
 }
+
+export const propertyTypeOptions = Object.values(PropertyTypes).map((value) => ({
+    value,
+    label:
+        value === PropertyTypes.House
+            ? getPropertyTypeValue(PropertyTypes.House)
+            : value === PropertyTypes.RentalRoom
+              ? getPropertyTypeValue(PropertyTypes.RentalRoom)
+              : value === PropertyTypes.Apartment
+                ? getPropertyTypeValue(PropertyTypes.Apartment)
+                : getPropertyTypeValue(PropertyTypes.Flat),
+}));
+
+export const propertyStatusOptions = Object.values(PropertyStatus).map((value) => ({
+    value,
+    label:
+        value === PropertyStatus.Available
+            ? getPropertyStatusValue(PropertyStatus.Available)
+            : value === PropertyStatus.Reserved
+              ? getPropertyStatusValue(PropertyStatus.Reserved)
+              : value === PropertyStatus.Rented
+                ? getPropertyStatusValue(PropertyStatus.Rented)
+                : value === PropertyStatus.Hidden
+                  ? getPropertyStatusValue(PropertyStatus.Hidden)
+                  : getPropertyStatusValue(PropertyStatus.Maintenance),
+}));

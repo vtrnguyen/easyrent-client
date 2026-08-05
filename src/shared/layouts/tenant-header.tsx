@@ -5,7 +5,6 @@ import { useRouter } from 'next/navigation';
 import { getHomeRoute } from '@/common/helpers/helper';
 import Image from 'next/image';
 import UserMenu from '../components/user-menu/user-menu';
-import Button from '../components/buttons/button';
 
 export default function TenantHeader() {
     const router = useRouter();
@@ -37,7 +36,6 @@ export default function TenantHeader() {
             </button>
 
             <div className="flex items-center gap-4">
-                <Button variant="primary">Đăng bài tìm nhà</Button>
                 <UserMenu />
             </div>
         </header>

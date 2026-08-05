@@ -1,8 +1,9 @@
 'use client';
 
-import { Roles } from '@/common/constants/appConstants';
+import { allowedLanguages, Roles } from '@/common/constants/appConstants';
 import AuthGuard from '../guards/auth-guard';
 import TenantHeader from './tenant-header';
+import Dropdown from '../components/dropdown/dropdown';
 
 interface TenantLayoutProps {
     children: React.ReactNode;
@@ -79,13 +80,7 @@ export default function TenantLayout({ children }: TenantLayoutProps) {
                                     <p className="text-sm font-semibold tracking-[0.18em] text-slate-900 uppercase">
                                         Quốc gia & ngôn ngữ
                                     </p>
-                                    <button
-                                        type="button"
-                                        className="inline-flex h-10 items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 text-sm text-slate-700 shadow-sm"
-                                    >
-                                        Việt Nam
-                                        <span className="text-slate-400">▾</span>
-                                    </button>
+                                    <Dropdown options={allowedLanguages} />
                                 </div>
                             </div>
                         </div>

@@ -4,6 +4,9 @@ import TenantLayout from '@/shared/layouts/tenant-layout';
 import Button from '@/shared/components/buttons/button';
 import Card from '@/shared/components/card/card';
 import TextField from '@/shared/components/text-field/text-field';
+import Dropdown from '@/shared/components/dropdown/dropdown';
+import { propertyTypeOptions } from '@/common/helpers/helper';
+import { FaSearch } from 'react-icons/fa';
 
 const postingCards = [
     {
@@ -117,58 +120,48 @@ export default function Home() {
             <div className="mx-auto max-w-7xl space-y-10">
                 <section className="rounded-[28px] border border-slate-200 bg-white p-4 shadow-sm sm:p-6">
                     <div className="grid gap-4 lg:grid-cols-[220px_minmax(0,1fr)]">
-                        <button
-                            type="button"
-                            className="flex h-14 items-center justify-between rounded-2xl border border-slate-200 bg-slate-50 px-4 text-left text-sm font-semibold text-slate-800"
-                        >
-                            <span>Danh mục</span>
-                            <span className="text-slate-400">▾</span>
-                        </button>
+                        <Dropdown options={propertyTypeOptions} />
 
-                        <div className="flex h-14 items-center gap-3 rounded-2xl border border-slate-200 bg-white px-4 shadow-sm">
-                            <span className="text-slate-400">⌕</span>
-                            <input
+                        <div className="flex items-center gap-3">
+                            <TextField
                                 type="text"
                                 placeholder="Tìm kiếm khu vực, dự án, địa điểm..."
-                                className="w-full bg-transparent text-sm outline-none placeholder:text-slate-400"
+                                containerClassName="w-full"
+                                leftIcon={<FaSearch />}
                             />
-                            <Button variant="blue" size="sm" className="shrink-0">
+                            <Button variant="blue" className="shrink-0">
                                 Tìm kiếm
                             </Button>
                         </div>
                     </div>
 
                     <div className="mt-4 grid gap-3 lg:grid-cols-[1.4fr_0.9fr_0.6fr]">
-                        <details className="group rounded-2xl border border-slate-200 bg-white p-4">
-                            <summary className="flex cursor-pointer list-none items-center justify-between text-sm font-semibold text-slate-800">
-                                <span>Địa chỉ</span>
-                                <span className="text-slate-400 transition group-open:rotate-180">▾</span>
-                            </summary>
+                        <div className="rounded-2xl border border-slate-200 bg-white p-4">
+                            <h3 className="text-sm font-semibold text-slate-800">Địa chỉ</h3>
 
                             <div className="mt-4 grid gap-3 sm:grid-cols-3">
                                 <TextField label="Tỉnh/Thành" placeholder="Chọn tỉnh / thành" />
                                 <TextField label="Phường/Xã" placeholder="Chọn phường / xã" />
                                 <TextField label="Địa chỉ cụ thể" placeholder="Nhập địa chỉ cụ thể" />
                             </div>
-                        </details>
+                        </div>
 
-                        <details className="group rounded-2xl border border-slate-200 bg-white p-4">
-                            <summary className="flex cursor-pointer list-none items-center justify-between text-sm font-semibold text-slate-800">
-                                <span>Giá</span>
-                                <span className="text-slate-400 transition group-open:rotate-180">▾</span>
-                            </summary>
+                        <div className="rounded-2xl border border-slate-200 bg-white p-4">
+                            <h3 className="text-sm font-semibold text-slate-800">Giá</h3>
 
                             <div className="mt-4 grid gap-3 sm:grid-cols-2">
-                                <TextField label="Giá thấp nhất" placeholder="0 đ" />
-                                <TextField label="Giá cao nhất" placeholder="50.000.000 đ" />
+                                <TextField label="Giá thấp nhất" placeholder="0 VND" />
+                                <TextField label="Giá cao nhất" placeholder="50.000.000 VND" />
                             </div>
-                        </details>
+                        </div>
 
-                        <TextField
-                            label="Diện tích"
-                            placeholder="Nhập diện tích m²"
-                            containerClassName="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm"
-                        />
+                        <div className="rounded-2xl border border-slate-200 bg-white p-4">
+                            <h3 className="text-sm font-semibold text-slate-800">Chi tiết</h3>
+
+                            <div className="mt-4">
+                                <TextField label="Diện tích" placeholder="Nhập diện tích m²" />
+                            </div>
+                        </div>
                     </div>
                 </section>
 
@@ -181,9 +174,7 @@ export default function Home() {
                             <h2 className="mt-1 text-2xl font-semibold text-slate-900">Gợi ý bài đăng phù hợp</h2>
                         </div>
 
-                        <Button variant="secondary" size="sm">
-                            Xem thêm
-                        </Button>
+                        <Button variant="primary">Xem thêm</Button>
                     </div>
 
                     <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
