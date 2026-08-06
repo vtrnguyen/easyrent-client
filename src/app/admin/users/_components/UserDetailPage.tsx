@@ -168,8 +168,10 @@ export default function UserDetailPage({ userId }: Props) {
     return (
         <React.Fragment>
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-                <div className="flex items-center justify-between">
-                    <h1 className="text-2xl font-semibold">{isCreate ? 'Tạo người dùng' : 'Cập nhật người dùng'}</h1>
+                <div className="flex min-h-10 flex-wrap items-start justify-between gap-3">
+                    <h1 className="text-2xl font-semibold text-slate-900">
+                        {isCreate ? 'Tạo người dùng' : 'Cập nhật người dùng'}
+                    </h1>
 
                     <Button type="submit">{isSubmitting ? 'Đang lưu...' : 'Lưu'}</Button>
                 </div>

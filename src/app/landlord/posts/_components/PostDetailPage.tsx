@@ -110,7 +110,7 @@ export default function PostDetailPage({ postId }: Props) {
     };
     return (
         <form className="space-y-6" onSubmit={handleSubmit(submit)}>
-            <div className="flex items-center justify-between">
+            <div className="flex min-h-10 flex-wrap items-start justify-between gap-3">
                 <div>
                     <h1 className="text-2xl font-semibold text-slate-900">
                         {isCreate ? 'Tạo bài viết' : 'Cập nhật bài viết'}

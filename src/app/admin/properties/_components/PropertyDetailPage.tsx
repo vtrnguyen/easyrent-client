@@ -304,7 +304,7 @@ export default function PropertyDetailPage({ propertyId }: Props) {
     return (
         <React.Fragment>
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-                <div className="flex items-center justify-between gap-4">
+                <div className="flex min-h-10 flex-wrap items-start justify-between gap-4">
                     <div>
                         <h1 className="text-2xl font-semibold text-slate-900">
                             {isCreate ? 'Tạo chỗ ở' : 'Cập nhật chỗ ở'}

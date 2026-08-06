@@ -48,7 +48,7 @@ export default function AdminUtilitiesPage() {
 
     return (
         <section className="space-y-4">
-            <div className="flex items-center justify-between">
+            <div className="flex min-h-10 flex-wrap items-start justify-between gap-3">
                 <h1 className="text-2xl font-semibold text-slate-900">Quản lý tiện ích</h1>
             </div>
 
