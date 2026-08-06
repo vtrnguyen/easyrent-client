@@ -19,6 +19,8 @@ import Dropdown from '@/shared/components/dropdown/dropdown';
 import useLoadingOverlay from '@/shared/hooks/useLoadingOverlay';
 import TextArea from '@/shared/components/textarea/textarea';
 import TextField from '@/shared/components/text-field/text-field';
+import AdministrativeAddressFields from '@/shared/components/property-location/administrative-address-fields';
+import LocationPicker from '@/shared/components/property-location/location-picker';
 import { Utility } from '@/types/utility';
 import { propertySchema } from '@/validations/property.schema';
 import { z } from 'zod';
@@ -64,8 +66,8 @@ export default function PropertyDetailPage({ propertyId }: Props) {
             longitude: 0,
             area: 0,
             maxPeople: 1,
-            numberOfBedrooms: 0,
-            numberOfBathrooms: 0,
+            numberOfBedrooms: 1,
+            numberOfBathrooms: 1,
             extraRoomInfos: '',
             price: 0,
             electricityPrice: 0,
@@ -88,6 +90,11 @@ export default function PropertyDetailPage({ propertyId }: Props) {
     const selectedVideos = useWatch({
         control,
         name: 'videos',
+    });
+
+    const [province, district, ward, address, latitude, longitude] = useWatch({
+        control,
+        name: ['province', 'district', 'ward', 'address', 'latitude', 'longitude'],
     });
 
     const selectedImagePreviews = useMemo(
@@ -295,13 +302,21 @@ export default function PropertyDetailPage({ propertyId }: Props) {
                             )}
                         />
 
-                        <TextField label="Tỉnh/thành" error={errors.province?.message} {...register('province')} />
-
-                        <TextField label="Quận/huyện" error={errors.district?.message} {...register('district')} />
-
-                        <TextField label="Phường/xã" error={errors.ward?.message} {...register('ward')} />
-
-                        <TextField label="Địa chỉ" error={errors.address?.message} {...register('address')} />
+                        <AdministrativeAddressFields
+                            province={province}
+                            district={district}
+                            ward={ward}
+                            address={address}
+                            errors={{
+                                province: errors.province?.message,
+                                district: errors.district?.message,
+                                ward: errors.ward?.message,
+                                address: errors.address?.message,
+                            }}
+                            onChange={(field, value) =>
+                                setValue(field, value, { shouldDirty: true, shouldValidate: true })
+                            }
+                        />
                     </div>
                 </Card>
 
@@ -310,20 +325,6 @@ export default function PropertyDetailPage({ propertyId }: Props) {
                         <TextArea label="Mô tả" error={errors.description?.message} {...register('description')} />
 
                         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
-                            <TextField
-                                type="number"
-                                label="Vĩ độ"
-                                error={errors.latitude?.message}
-                                {...register('latitude')}
-                            />
-
-                            <TextField
-                                type="number"
-                                label="Kinh độ"
-                                error={errors.longitude?.message}
-                                {...register('longitude')}
-                            />
-
                             <TextField
                                 type="number"
                                 label="Diện tích (m²)"
@@ -340,6 +341,7 @@ export default function PropertyDetailPage({ propertyId }: Props) {
 
                             <TextField
                                 type="number"
+                                min={1}
                                 label="Số phòng ngủ"
                                 error={errors.numberOfBedrooms?.message}
                                 {...register('numberOfBedrooms')}
@@ -347,11 +349,24 @@ export default function PropertyDetailPage({ propertyId }: Props) {
 
                             <TextField
                                 type="number"
+                                min={1}
                                 label="Số phòng tắm"
                                 error={errors.numberOfBathrooms?.message}
                                 {...register('numberOfBathrooms')}
                             />
                         </div>
+
+                        <LocationPicker
+                            latitude={Number(latitude)}
+                            longitude={Number(longitude)}
+                            latitudeError={errors.latitude?.message}
+                            longitudeError={errors.longitude?.message}
+                            addressHint={[ward, district, province, 'Việt Nam'].filter(Boolean).join(', ')}
+                            onChange={(lat, lng) => {
+                                setValue('latitude', lat, { shouldDirty: true, shouldValidate: true });
+                                setValue('longitude', lng, { shouldDirty: true, shouldValidate: true });
+                            }}
+                        />
                     </div>
                 </Card>
 

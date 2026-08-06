@@ -1,7 +1,7 @@
 'use client';
 
-import { PropertyStatus } from '@/common/constants/appConstants';
-import { formatDate, getPropertyStatusValue } from '@/common/helpers/helper';
+import { PropertyStatus, PropertyTypes } from '@/common/constants/appConstants';
+import { formatDate, getPropertyStatusValue, getPropertyTypeValue } from '@/common/helpers/helper';
 import Badge from '@/shared/components/badge/badge';
 import { TableColumn } from '@/shared/components/table/table';
 import { FilterConfig } from '@/types/filter';
@@ -84,7 +84,7 @@ export const usePropertiesConstants = () => {
             fieldId: 'type',
             header: 'Loại',
             sortable: true,
-            renderCell: (property) => property.type,
+            renderCell: (property) => getPropertyTypeValue(property.type as PropertyTypes),
         },
         {
             fieldId: 'area',
@@ -107,7 +107,9 @@ export const usePropertiesConstants = () => {
             fieldId: 'status',
             header: 'Trạng thái',
             sortable: true,
-            renderCell: (property) => <Badge variant={getStatusVariant(property.status)}>{property.status}</Badge>,
+            renderCell: (property) => (
+                <Badge variant={getStatusVariant(property.status)}>{getPropertyStatusValue(property.status)}</Badge>
+            ),
         },
         {
             fieldId: 'created_at',

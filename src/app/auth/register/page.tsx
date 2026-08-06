@@ -96,9 +96,9 @@ export default function RegisterPage() {
                         leftIcon={<FiMapPin />}
                         error={errors.gender?.message}
                         options={[
-                            { label: 'Nam', value: Gender.Male },
-                            { label: 'Nữ', value: Gender.Female },
-                            { label: 'Khác', value: Gender.Other },
+                            { label: 'Nam', value: Genders.Male },
+                            { label: 'Nữ', value: Genders.Female },
+                            { label: 'Khác', value: Genders.Other },
                         ]}
                         {...register('gender')}
                     />
