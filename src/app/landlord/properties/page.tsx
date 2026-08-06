@@ -22,7 +22,7 @@ import { Property } from '@/types/property';
 
 import { usePropertiesConstants } from './usePropertiesConstants';
 
-export default function AdminPropertiesPage() {
+export default function LandlordPropertiesPage() {
     const router = useRouter();
     const loading = useLoadingOverlay();
 

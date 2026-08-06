@@ -2,7 +2,7 @@ import { FiHome } from 'react-icons/fi';
 
 import { SidebarMenu } from '@/types/sidebar';
 import { appRoutes } from '@/common/constants/appConstants';
-import { MdOutlineHomeWork } from 'react-icons/md';
+import { MdContentPaste, MdOutlineContentPasteSearch, MdOutlineHomeWork } from 'react-icons/md';
 
 export const landlordMenus: SidebarMenu[] = [
     {
@@ -18,6 +18,17 @@ export const landlordMenus: SidebarMenu[] = [
                 icon: MdOutlineHomeWork,
                 text: 'Danh sách chỗ ở',
                 destination: `/${appRoutes.landlord}/${appRoutes.properties}`,
+            },
+        ],
+    },
+    {
+        icon: MdContentPaste,
+        text: 'Quản lý bài viết',
+        submenu: [
+            {
+                icon: MdOutlineContentPasteSearch,
+                text: 'Danh sách bài viết',
+                destination: `/${appRoutes.landlord}/${appRoutes.posts}`,
             },
         ],
     },
