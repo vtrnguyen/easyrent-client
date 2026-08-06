@@ -12,6 +12,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
+import axios from 'axios';
 import TextField from '@/shared/components/text-field/text-field';
 
 export default function LoginPage() {
@@ -47,8 +48,9 @@ export default function LoginPage() {
             toast.success('Đăng nhập thành công!');
 
             router.push(getHomeRoute(loginData.role));
-        } catch (error: any) {
-            toast.error(error.response?.data?.message ?? 'Đăng nhập thất bại');
+        } catch (error: unknown) {
+            const message = axios.isAxiosError<{ message?: string }>(error) ? error.response?.data?.message : undefined;
+            toast.error(message ?? 'Đăng nhập thất bại');
         }
     };
 
@@ -78,7 +80,7 @@ export default function LoginPage() {
                     {...register('password')}
                 />
 
-                <Button type="submit" fullWidth iconPosition="right">
+                <Button type="submit" variant="blue" size="lg" fullWidth disabled={isSubmitting}>
                     {isSubmitting ? 'Đang đăng nhập...' : 'Đăng nhập'}
                 </Button>
             </form>

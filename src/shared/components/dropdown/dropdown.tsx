@@ -118,7 +118,7 @@ const Dropdown = forwardRef<HTMLDivElement, DropdownProps>(function Dropdown(
                 disabled={disabled}
                 onClick={() => setOpen((prev) => !prev)}
                 className={clsx(
-                    'flex h-11 w-full cursor-pointer items-center justify-between rounded-lg border bg-white px-3 text-sm transition-all outline-none',
+                    'flex h-11 w-full cursor-pointer items-center justify-between rounded-lg border bg-white px-3 text-sm text-slate-900 transition-all outline-none',
                     error ? 'border-rose-400' : 'border-slate-300',
                     disabled && 'cursor-not-allowed bg-slate-100 text-slate-400',
                     className,

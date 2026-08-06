@@ -1,20 +1,22 @@
 'use client';
 
 import Link from 'next/link';
-import { FiLock, FiMail, FiMapPin, FiPhone, FiUser } from 'react-icons/fi';
+import { FiLock, FiMail, FiPhone, FiUser } from 'react-icons/fi';
+import { IoMaleFemaleOutline } from 'react-icons/io5';
 
 import { authApi } from '@/api/auth.api';
 import { authStorage, getHomeRoute } from '@/common/helpers/helper';
 import Button from '@/shared/components/buttons/button';
-import Select from '@/shared/components/select/select';
+import Dropdown from '@/shared/components/dropdown/dropdown';
 import { useAuthStore } from '@/stores/auth.store';
 import { registerSchema, RegisterSchema } from '@/validations/auth.schema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
+import axios from 'axios';
 import TextField from '@/shared/components/text-field/text-field';
-import { Genders } from '@/common/constants/appConstants';
+import { genderOptions, Genders } from '@/common/constants/appConstants';
 
 export default function RegisterPage() {
     const router = useRouter();
@@ -23,6 +25,7 @@ export default function RegisterPage() {
     const {
         register,
         handleSubmit,
+        control,
         formState: { errors, isSubmitting },
     } = useForm<RegisterSchema>({
         resolver: zodResolver(registerSchema),
@@ -49,8 +52,9 @@ export default function RegisterPage() {
             toast.success('Đăng ký thành công!');
 
             router.push(getHomeRoute(registerData.role));
-        } catch (error: any) {
-            toast.error(error?.response?.data?.message || 'Đăng ký thất bại!');
+        } catch (error: unknown) {
+            const message = axios.isAxiosError<{ message?: string }>(error) ? error.response?.data?.message : undefined;
+            toast.error(message ?? 'Đăng ký thất bại!');
         }
     };
 
@@ -90,17 +94,20 @@ export default function RegisterPage() {
                         {...register('phoneNumber')}
                     />
 
-                    <Select
-                        label="Giới tính"
-                        placeholder="Chọn giới tính"
-                        leftIcon={<FiMapPin />}
-                        error={errors.gender?.message}
-                        options={[
-                            { label: 'Nam', value: Genders.Male },
-                            { label: 'Nữ', value: Genders.Female },
-                            { label: 'Khác', value: Genders.Other },
-                        ]}
-                        {...register('gender')}
+                    <Controller
+                        name="gender"
+                        control={control}
+                        render={({ field }) => (
+                            <Dropdown
+                                label="Giới tính"
+                                placeholder="Chọn giới tính"
+                                leftIcon={<IoMaleFemaleOutline />}
+                                error={errors.gender?.message}
+                                options={genderOptions}
+                                value={field.value}
+                                onChange={field.onChange}
+                            />
+                        )}
                     />
                 </div>
 
@@ -113,7 +120,7 @@ export default function RegisterPage() {
                     {...register('password')}
                 />
 
-                <Button type="submit" fullWidth iconPosition="right">
+                <Button type="submit" variant="blue" size="lg" fullWidth disabled={isSubmitting}>
                     {isSubmitting ? 'Đang đăng ký...' : 'Đăng ký'}
                 </Button>
             </form>
