@@ -22,6 +22,7 @@ import TextField from '@/shared/components/text-field/text-field';
 import AdministrativeAddressFields from '@/shared/components/property-location/administrative-address-fields';
 import LocationPicker from '@/shared/components/property-location/location-picker';
 import { Utility } from '@/types/utility';
+import { PropertyImage, PropertyVideo } from '@/types/property';
 import { propertySchema } from '@/validations/property.schema';
 import { z } from 'zod';
 
@@ -39,8 +40,10 @@ export default function PropertyDetailPage({ propertyId }: Props) {
     const router = useRouter();
 
     const [utilities, setUtilities] = useState<Utility[]>([]);
-    const [existingImages, setExistingImages] = useState<string[]>([]);
-    const [existingVideos, setExistingVideos] = useState<string[]>([]);
+    const [existingImages, setExistingImages] = useState<PropertyImage[]>([]);
+    const [existingVideos, setExistingVideos] = useState<PropertyVideo[]>([]);
+    const [removedImageIds, setRemovedImageIds] = useState<string[]>([]);
+    const [removedVideoIds, setRemovedVideoIds] = useState<string[]>([]);
     const [openConfirm, setOpenConfirm] = useState(false);
     const [submitValues, setSubmitValues] = useState<PropertyFormValues | null>(null);
     const [selectedUtilityId, setSelectedUtilityId] = useState('');
@@ -99,7 +102,8 @@ export default function PropertyDetailPage({ propertyId }: Props) {
 
     const selectedImagePreviews = useMemo(
         () =>
-            (selectedImages ?? []).map((file) => ({
+            (selectedImages ?? []).map((file, index) => ({
+                index,
                 name: file.name,
                 url: URL.createObjectURL(file),
             })),
@@ -108,7 +112,8 @@ export default function PropertyDetailPage({ propertyId }: Props) {
 
     const selectedVideoPreviews = useMemo(
         () =>
-            (selectedVideos ?? []).map((file) => ({
+            (selectedVideos ?? []).map((file, index) => ({
+                index,
                 name: file.name,
                 url: URL.createObjectURL(file),
             })),
@@ -155,8 +160,8 @@ export default function PropertyDetailPage({ propertyId }: Props) {
                 setUtilities(utilityResponse.data);
 
                 if (property) {
-                    setExistingImages(property.images.map((item) => item.imageUrl));
-                    setExistingVideos(property.videos.map((item) => item.videoUrl));
+                    setExistingImages(property.images);
+                    setExistingVideos(property.videos);
 
                     reset({
                         title: property.title,
@@ -231,6 +236,8 @@ export default function PropertyDetailPage({ propertyId }: Props) {
                 utilities: submitValues.utilities,
                 images: submitValues.images ?? [],
                 videos: submitValues.videos ?? [],
+                removed_image_ids: removedImageIds,
+                removed_video_ids: removedVideoIds,
             });
 
             if (isCreate) {
@@ -266,6 +273,32 @@ export default function PropertyDetailPage({ propertyId }: Props) {
 
         setValue('utilities', [...selectedUtilities, selectedUtilityId], { shouldDirty: true });
         setSelectedUtilityId('');
+    };
+
+    const removeExistingImage = (id: string) => {
+        setExistingImages((items) => items.filter((item) => item.id !== id));
+        setRemovedImageIds((ids) => [...ids, id]);
+    };
+
+    const removeExistingVideo = (id: string) => {
+        setExistingVideos((items) => items.filter((item) => item.id !== id));
+        setRemovedVideoIds((ids) => [...ids, id]);
+    };
+
+    const removeSelectedImage = (index: number) => {
+        setValue(
+            'images',
+            (selectedImages ?? []).filter((_, itemIndex) => itemIndex !== index),
+            { shouldDirty: true },
+        );
+    };
+
+    const removeSelectedVideo = (index: number) => {
+        setValue(
+            'videos',
+            (selectedVideos ?? []).filter((_, itemIndex) => itemIndex !== index),
+            { shouldDirty: true },
+        );
     };
 
     return (
@@ -471,13 +504,21 @@ export default function PropertyDetailPage({ propertyId }: Props) {
                                 <p className="text-sm text-slate-500">Chưa có ảnh.</p>
                             ) : (
                                 <div className="grid grid-cols-2 gap-3 md:grid-cols-3 xl:grid-cols-4">
-                                    {existingImages.map((imageUrl, index) => (
+                                    {existingImages.map((image, index) => (
                                         <div
-                                            key={`${imageUrl}-${index}`}
-                                            className="overflow-hidden rounded-xl border border-slate-200 bg-slate-50"
+                                            key={image.id}
+                                            className="relative overflow-hidden rounded-xl border border-slate-200 bg-slate-50"
                                         >
+                                            <button
+                                                type="button"
+                                                aria-label="Gỡ ảnh"
+                                                onClick={() => removeExistingImage(image.id)}
+                                                className="absolute top-2 right-2 z-10 flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-red-600 text-lg text-white shadow hover:bg-red-700"
+                                            >
+                                                ×
+                                            </button>
                                             <Image
-                                                src={imageUrl}
+                                                src={image.imageUrl}
                                                 alt={`Ảnh chỗ ở ${index + 1}`}
                                                 width={320}
                                                 height={240}
@@ -508,8 +549,16 @@ export default function PropertyDetailPage({ propertyId }: Props) {
                                     {selectedImagePreviews.map((item) => (
                                         <div
                                             key={item.url}
-                                            className="overflow-hidden rounded-xl border border-slate-200 bg-slate-50"
+                                            className="relative overflow-hidden rounded-xl border border-slate-200 bg-slate-50"
                                         >
+                                            <button
+                                                type="button"
+                                                aria-label="Gỡ ảnh mới"
+                                                onClick={() => removeSelectedImage(item.index)}
+                                                className="absolute top-2 right-2 z-10 flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-red-600 text-lg text-white shadow hover:bg-red-700"
+                                            >
+                                                ×
+                                            </button>
                                             <Image
                                                 src={item.url}
                                                 alt={item.name}
@@ -535,15 +584,24 @@ export default function PropertyDetailPage({ propertyId }: Props) {
                                 <p className="text-sm text-slate-500">Chưa có video.</p>
                             ) : (
                                 <div className="grid grid-cols-1 gap-3 lg:grid-cols-2">
-                                    {existingVideos.map((videoUrl, index) => (
-                                        <video
-                                            key={`${videoUrl}-${index}`}
-                                            controls
-                                            controlsList="nodownload"
-                                            className="w-full rounded-xl border border-slate-200 bg-slate-50"
-                                        >
-                                            <source src={videoUrl} />
-                                        </video>
+                                    {existingVideos.map((video) => (
+                                        <div key={video.id} className="relative">
+                                            <button
+                                                type="button"
+                                                aria-label="Gỡ video"
+                                                onClick={() => removeExistingVideo(video.id)}
+                                                className="absolute top-2 right-2 z-10 flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-red-600 text-lg text-white shadow hover:bg-red-700"
+                                            >
+                                                ×
+                                            </button>
+                                            <video
+                                                controls
+                                                controlsList="nodownload"
+                                                className="w-full rounded-xl border border-slate-200 bg-slate-50"
+                                            >
+                                                <source src={video.videoUrl} />
+                                            </video>
+                                        </div>
                                     ))}
                                 </div>
                             )}
@@ -569,8 +627,16 @@ export default function PropertyDetailPage({ propertyId }: Props) {
                                     {selectedVideoPreviews.map((item) => (
                                         <div
                                             key={item.url}
-                                            className="overflow-hidden rounded-xl border border-slate-200 bg-slate-50 p-3"
+                                            className="relative overflow-hidden rounded-xl border border-slate-200 bg-slate-50 p-3"
                                         >
+                                            <button
+                                                type="button"
+                                                aria-label="Gỡ video mới"
+                                                onClick={() => removeSelectedVideo(item.index)}
+                                                className="absolute top-5 right-5 z-10 flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-red-600 text-lg text-white shadow hover:bg-red-700"
+                                            >
+                                                ×
+                                            </button>
                                             <video controls className="w-full rounded-lg">
                                                 <source src={item.url} />
                                             </video>
