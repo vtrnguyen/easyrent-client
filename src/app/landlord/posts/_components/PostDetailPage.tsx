@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useMemo, useState } from 'react';
-import { Controller, useForm } from 'react-hook-form';
+import { Controller, useForm, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useRouter } from 'next/navigation';
@@ -15,6 +15,7 @@ import Dropdown from '@/shared/components/dropdown/dropdown';
 import TextArea from '@/shared/components/textarea/textarea';
 import TextField from '@/shared/components/text-field/text-field';
 import useLoadingOverlay from '@/shared/hooks/useLoadingOverlay';
+import PostContentPreview from '@/shared/components/post-content-preview/post-content-preview';
 import { PostContentType, PostStatus } from '@/types/post';
 import { Property } from '@/types/property';
 import { FilterLogics } from '@/types/search';
@@ -46,6 +47,8 @@ export default function PostDetailPage({ postId }: Props) {
             status: PostStatus.Draft,
         },
     });
+    const content = useWatch({ control, name: 'content' });
+    const contentType = useWatch({ control, name: 'contentType' });
     const [properties, setProperties] = useState<Property[]>([]);
     useEffect(() => {
         let cancelled = false;
@@ -168,6 +171,11 @@ export default function PostDetailPage({ postId }: Props) {
                         {...register('content')}
                         error={errors.content?.message}
                     />
+                </div>
+            </Card>
+            <Card title="Xem trước nội dung">
+                <div className="min-h-80 rounded-xl border border-slate-200 bg-white p-5">
+                    <PostContentPreview content={content} contentType={contentType} />
                 </div>
             </Card>
         </form>
