@@ -16,6 +16,7 @@ import TextArea from '@/shared/components/textarea/textarea';
 import TextField from '@/shared/components/text-field/text-field';
 import useLoadingOverlay from '@/shared/hooks/useLoadingOverlay';
 import PostContentPreview from '@/shared/components/post-content-preview/post-content-preview';
+import MarkdownEditor from '@/shared/components/markdown-editor/markdown-editor';
 import { PostContentType, PostStatus } from '@/types/post';
 import { Property } from '@/types/property';
 import { FilterLogics } from '@/types/search';
@@ -163,13 +164,27 @@ export default function PostDetailPage({ postId }: Props) {
                             />
                         )}
                     />
-                    <TextArea
-                        containerClassName="lg:col-span-2"
-                        textareaClassName="min-h-80 font-mono"
-                        label="Nội dung"
-                        hint="Có thể nhập Markdown khi chọn định dạng Markdown."
-                        {...register('content')}
-                        error={errors.content?.message}
+                    <Controller
+                        name="content"
+                        control={control}
+                        render={({ field }) =>
+                            contentType === PostContentType.Markdown ? (
+                                <MarkdownEditor
+                                    value={field.value}
+                                    onChange={field.onChange}
+                                    error={errors.content?.message}
+                                />
+                            ) : (
+                                <TextArea
+                                    containerClassName="lg:col-span-2"
+                                    textareaClassName="min-h-80"
+                                    label="Nội dung"
+                                    value={field.value}
+                                    onChange={field.onChange}
+                                    error={errors.content?.message}
+                                />
+                            )
+                        }
                     />
                 </div>
             </Card>
