@@ -21,6 +21,16 @@ export const appRoutes = {
     utilities: 'utilities',
     posts: 'posts',
 
+    info: 'info',
+    aboutUs: 'about-us',
+    pricingAndSupport: 'pricing-and-support',
+    frequentlyAskedQuestions: 'frequently-asked-questions',
+    feedbackAndBugReport: 'feedback-and-bug-report',
+    postingRules: 'posting-rules',
+    operatingRegulations: 'operating-regulations',
+    termsAndConditions: 'terms-and-conditions',
+    privacyPolicy: 'privacy-policy',
+
     create: 'create',
 
     home: '',

@@ -1,9 +1,12 @@
 'use client';
 
-import { allowedLanguages, Roles } from '@/common/constants/appConstants';
+import { appRoutes, Roles } from '@/common/constants/appConstants';
 import AuthGuard from '../guards/auth-guard';
 import TenantHeader from './tenant-header';
-import Dropdown from '../components/dropdown/dropdown';
+import TextField from '../components/text-field/text-field';
+import Button from '../components/buttons/button';
+import Image from 'next/image';
+import Link from 'next/link';
 
 interface TenantLayoutProps {
     children: React.ReactNode;
@@ -39,10 +42,38 @@ export default function TenantLayout({ children }: TenantLayoutProps) {
                                     Hướng dẫn
                                 </h3>
                                 <ul className="space-y-3 text-sm text-slate-600">
-                                    <li>Về chúng tôi</li>
-                                    <li>Báo giá và hỗ trợ</li>
-                                    <li>Câu hỏi thường gặp</li>
-                                    <li>Góp ý báo lỗi</li>
+                                    <li>
+                                        <Link
+                                            className="transition hover:text-blue-600"
+                                            href={`/${appRoutes.info}/${appRoutes.aboutUs}`}
+                                        >
+                                            Về chúng tôi
+                                        </Link>
+                                    </li>
+                                    <li>
+                                        <Link
+                                            className="transition hover:text-blue-600"
+                                            href={`/${appRoutes.info}/${appRoutes.pricingAndSupport}`}
+                                        >
+                                            Báo giá và hỗ trợ
+                                        </Link>
+                                    </li>
+                                    <li>
+                                        <Link
+                                            className="transition hover:text-blue-600"
+                                            href={`/${appRoutes.info}/${appRoutes.frequentlyAskedQuestions}`}
+                                        >
+                                            Câu hỏi thường gặp
+                                        </Link>
+                                    </li>
+                                    <li>
+                                        <Link
+                                            className="transition hover:text-blue-600"
+                                            href={`/${appRoutes.info}/${appRoutes.feedbackAndBugReport}`}
+                                        >
+                                            Góp ý báo lỗi
+                                        </Link>
+                                    </li>
                                 </ul>
                             </div>
 
@@ -51,10 +82,38 @@ export default function TenantLayout({ children }: TenantLayoutProps) {
                                     Quy định
                                 </h3>
                                 <ul className="space-y-3 text-sm text-slate-600">
-                                    <li>Quy định đăng tin</li>
-                                    <li>Quy chế hoạt động</li>
-                                    <li>Điều khoản thỏa thuận</li>
-                                    <li>Chính sách bảo mật</li>
+                                    <li>
+                                        <Link
+                                            className="transition hover:text-blue-600"
+                                            href={`/${appRoutes.info}/${appRoutes.postingRules}`}
+                                        >
+                                            Quy định đăng tin
+                                        </Link>
+                                    </li>
+                                    <li>
+                                        <Link
+                                            className="transition hover:text-blue-600"
+                                            href={`/${appRoutes.info}/${appRoutes.operatingRegulations}`}
+                                        >
+                                            Quy chế hoạt động
+                                        </Link>
+                                    </li>
+                                    <li>
+                                        <Link
+                                            className="transition hover:text-blue-600"
+                                            href={`/${appRoutes.info}/${appRoutes.termsAndConditions}`}
+                                        >
+                                            Điều khoản thỏa thuận
+                                        </Link>
+                                    </li>
+                                    <li>
+                                        <Link
+                                            className="transition hover:text-blue-600"
+                                            href={`/${appRoutes.info}/${appRoutes.privacyPolicy}`}
+                                        >
+                                            Chính sách bảo mật
+                                        </Link>
+                                    </li>
                                 </ul>
                             </div>
 
@@ -63,25 +122,35 @@ export default function TenantLayout({ children }: TenantLayoutProps) {
                                     Đăng ký nhận tin
                                 </h3>
 
-                                <div className="flex min-w-0 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
-                                    <input
+                                <div className="flex items-start gap-2">
+                                    <TextField
                                         type="email"
+                                        aria-label="Email nhận tin"
                                         placeholder="Nhập email của bạn"
-                                        className="h-12 min-w-0 flex-1 px-4 text-sm outline-none placeholder:text-slate-400"
+                                        containerClassName="min-w-0 flex-1"
                                     />
-                                    <button
-                                        type="button"
-                                        className="h-12 bg-[#eb4d3d] px-4 text-sm font-semibold text-white transition hover:bg-[#d94435]"
-                                    >
+                                    <Button type="button" variant="blue">
                                         Gửi
-                                    </button>
+                                    </Button>
                                 </div>
 
                                 <div className="space-y-2">
                                     <p className="text-sm font-semibold tracking-[0.18em] text-slate-900 uppercase">
-                                        Quốc gia & ngôn ngữ
+                                        Tải ứng dụng EasyRent
                                     </p>
-                                    <Dropdown options={allowedLanguages} />
+                                    <div className="flex items-center gap-3">
+                                        <div className="relative h-28 w-28 overflow-hidden rounded-xl border border-slate-200 bg-white p-1">
+                                            <Image
+                                                src="/easyrent_qrcode.png"
+                                                alt="Mã QR tải ứng dụng EasyRent"
+                                                fill
+                                                className="object-contain p-1"
+                                            />
+                                        </div>
+                                        <p className="max-w-36 text-sm leading-6 text-slate-500">
+                                            Quét mã QR để tải và trải nghiệm EasyRent trên điện thoại.
+                                        </p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
