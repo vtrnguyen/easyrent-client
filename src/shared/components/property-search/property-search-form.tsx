@@ -61,10 +61,10 @@ export default function PropertySearchForm({ initialValues = emptyPropertySearch
                 </div>
             </div>
 
-            <div className="mt-4 grid gap-3 xl:grid-cols-[1.5fr_0.8fr_0.45fr]">
+            <div className="mt-4 space-y-3">
                 <div className="rounded-2xl border border-slate-200 bg-white p-4">
                     <h3 className="text-sm font-semibold text-slate-800">Địa chỉ</h3>
-                    <div className="mt-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+                    <div className="mt-4 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
                         <AdministrativeAddressFields
                             province={values.province}
                             district={values.district}
@@ -75,39 +75,41 @@ export default function PropertySearchForm({ initialValues = emptyPropertySearch
                     </div>
                 </div>
 
-                <div className="rounded-2xl border border-slate-200 bg-white p-4">
-                    <h3 className="text-sm font-semibold text-slate-800">Giá</h3>
-                    <div className="mt-4 grid gap-3 sm:grid-cols-2">
-                        <TextField
-                            label="Giá thấp nhất"
-                            type="number"
-                            min={0}
-                            placeholder="0 VND"
-                            value={values.minPrice}
-                            onChange={(event) => updateValue('minPrice', event.target.value)}
-                        />
-                        <TextField
-                            label="Giá cao nhất"
-                            type="number"
-                            min={0}
-                            placeholder="50.000.000 VND"
-                            value={values.maxPrice}
-                            onChange={(event) => updateValue('maxPrice', event.target.value)}
-                        />
+                <div className="grid gap-3 lg:grid-cols-[2fr_1fr]">
+                    <div className="rounded-2xl border border-slate-200 bg-white p-4">
+                        <h3 className="text-sm font-semibold text-slate-800">Giá</h3>
+                        <div className="mt-4 grid gap-4 sm:grid-cols-2">
+                            <TextField
+                                label="Giá thấp nhất"
+                                type="number"
+                                min={0}
+                                placeholder="0 VND"
+                                value={values.minPrice}
+                                onChange={(event) => updateValue('minPrice', event.target.value)}
+                            />
+                            <TextField
+                                label="Giá cao nhất"
+                                type="number"
+                                min={0}
+                                placeholder="50.000.000 VND"
+                                value={values.maxPrice}
+                                onChange={(event) => updateValue('maxPrice', event.target.value)}
+                            />
+                        </div>
                     </div>
-                </div>
 
-                <div className="rounded-2xl border border-slate-200 bg-white p-4">
-                    <h3 className="text-sm font-semibold text-slate-800">Chi tiết</h3>
-                    <div className="mt-4">
-                        <TextField
-                            label="Diện tích tối thiểu"
-                            type="number"
-                            min={0}
-                            placeholder="Diện tích m²"
-                            value={values.minArea}
-                            onChange={(event) => updateValue('minArea', event.target.value)}
-                        />
+                    <div className="rounded-2xl border border-slate-200 bg-white p-4">
+                        <h3 className="text-sm font-semibold text-slate-800">Chi tiết</h3>
+                        <div className="mt-4">
+                            <TextField
+                                label="Diện tích tối thiểu"
+                                type="number"
+                                min={0}
+                                placeholder="Diện tích m²"
+                                value={values.minArea}
+                                onChange={(event) => updateValue('minArea', event.target.value)}
+                            />
+                        </div>
                     </div>
                 </div>
             </div>
