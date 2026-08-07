@@ -29,7 +29,8 @@ export default function TenantLayout({ children }: TenantLayoutProps) {
                                 <div className="space-y-2 text-sm text-slate-600">
                                     <p>Công ty Cổ phần EasyRent Việt Nam</p>
                                     <p>Tầng 31, Keangnam Hanoi Landmark Tower, Phường Yên Hòa, Hà Nội</p>
-                                    <p>Hotline: 1900 1881</p>
+                                    <p>Hotline: 0686868688</p>
+                                    <p>Email: info@easyrent.com.vn</p>
                                 </div>
                             </div>
 

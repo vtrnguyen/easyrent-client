@@ -8,12 +8,14 @@ import Avatar from '@/shared/components/avatar/avatar';
 import { authStorage } from '@/common/helpers/helper';
 import { useAuthStore } from '@/stores/auth.store';
 import ChangePassword from '../change-password/change-password';
+import { usePostFavoriteStore } from '@/stores/post-favorite.store';
 
 export default function UserMenu() {
     const router = useRouter();
 
     const user = useAuthStore((state) => state.user);
     const logout = useAuthStore((state) => state.logout);
+    const resetPostFavorites = usePostFavoriteStore((state) => state.reset);
 
     const [isOpen, setIsOpen] = useState(false);
     const [openChangePassword, setOpenChangePassword] = useState(false);
@@ -23,6 +25,7 @@ export default function UserMenu() {
     const handleLogout = () => {
         authStorage.clear();
         logout();
+        resetPostFavorites();
         router.replace('/auth/login');
     };
 
@@ -42,7 +45,13 @@ export default function UserMenu() {
 
     return (
         <div ref={menuRef} className="relative">
-            <Avatar src={user?.avatarUrl} name={user?.fullName} showName onClick={() => setIsOpen((prev) => !prev)} />
+            <Avatar
+                src={user?.avatarUrl}
+                name={user?.fullName}
+                showName
+                className="[&>span]:hidden sm:[&>span]:inline"
+                onClick={() => setIsOpen((prev) => !prev)}
+            />
 
             {isOpen && (
                 <div className="absolute top-full right-0 z-50 mt-2 w-52 rounded-xl border border-slate-200 bg-white py-2 shadow-lg">
