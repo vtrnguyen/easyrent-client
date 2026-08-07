@@ -22,7 +22,27 @@ export interface Post {
     publishedAt: string | null;
     expiresAt: string | null;
     propertyTitle: string;
+    propertyPrice: number;
+    propertyArea: number;
+    propertyAddress: string;
+    thumbnailUrl: string;
     createdAt: string;
+}
+
+export interface PostSocial {
+    liked: boolean;
+    likeCount: number;
+}
+
+export interface PostComment {
+    id: string;
+    userId: string;
+    userName: string;
+    userAvatarUrl: string;
+    parentCommentId: string | null;
+    content: string;
+    createdAt: string;
+    children: PostComment[];
 }
 
 export interface PostPayload {

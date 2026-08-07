@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import { forwardRef, type ButtonHTMLAttributes, type ReactNode } from 'react';
 
-type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'blue';
+type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'blue' | 'danger';
 type ButtonSize = 'sm' | 'md' | 'lg';
 type IconPosition = 'left' | 'right';
 type ContentAlign = 'left' | 'center' | 'right';
@@ -27,6 +27,7 @@ const variantClasses: Record<ButtonVariant, string> = {
     secondary: 'border border-slate-200 bg-white text-slate-800 hover:bg-slate-50 focus-visible:ring-slate-300',
     ghost: 'bg-transparent text-slate-700 hover:bg-slate-100 focus-visible:ring-slate-300',
     blue: 'bg-blue-600 text-white shadow-lg shadow-blue-600/20 hover:bg-blue-700 focus-visible:ring-blue-400',
+    danger: 'border border-rose-600 bg-rose-600 text-white shadow-sm hover:bg-rose-700 focus-visible:ring-rose-400',
 };
 
 const alignClasses: Record<ContentAlign, string> = {

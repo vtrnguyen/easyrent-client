@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import Link from 'next/link';
 import { FiMapPin, FiMaximize2, FiUsers } from 'react-icons/fi';
 
 import { getPropertyTypeValue } from '@/common/helpers/helper';
@@ -10,7 +11,7 @@ export default function PropertyCard({ property }: { property: Property }) {
     const location = [property.address, property.ward, property.district, property.province].filter(Boolean).join(', ');
 
     return (
-        <article className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+        <Link href={`/properties/${property.id}`} className="block overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
             <div className="relative aspect-[4/3] bg-slate-100">
                 {thumbnail ? (
                     <Image
@@ -54,6 +55,6 @@ export default function PropertyCard({ property }: { property: Property }) {
                     <span className="text-sm font-normal text-slate-500"> / tháng</span>
                 </p>
             </div>
-        </article>
+        </Link>
     );
 }
