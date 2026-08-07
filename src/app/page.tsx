@@ -3,10 +3,7 @@
 import TenantLayout from '@/shared/layouts/tenant-layout';
 import Button from '@/shared/components/buttons/button';
 import Card from '@/shared/components/card/card';
-import TextField from '@/shared/components/text-field/text-field';
-import Dropdown from '@/shared/components/dropdown/dropdown';
-import { propertyTypeOptions } from '@/common/helpers/helper';
-import { FaSearch } from 'react-icons/fa';
+import PropertySearchForm from '@/shared/components/property-search/property-search-form';
 
 const postingCards = [
     {
@@ -118,52 +115,7 @@ export default function Home() {
     return (
         <TenantLayout>
             <div className="mx-auto max-w-7xl space-y-10">
-                <section className="rounded-[28px] border border-slate-200 bg-white p-4 shadow-sm sm:p-6">
-                    <div className="grid gap-4 lg:grid-cols-[220px_minmax(0,1fr)]">
-                        <Dropdown options={propertyTypeOptions} />
-
-                        <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-                            <TextField
-                                type="text"
-                                placeholder="Tìm kiếm khu vực, dự án, địa điểm..."
-                                containerClassName="w-full"
-                                leftIcon={<FaSearch />}
-                            />
-                            <Button variant="blue" className="w-full shrink-0 sm:w-auto">
-                                Tìm kiếm
-                            </Button>
-                        </div>
-                    </div>
-
-                    <div className="mt-4 grid gap-3 lg:grid-cols-[1.4fr_0.9fr_0.6fr]">
-                        <div className="rounded-2xl border border-slate-200 bg-white p-4">
-                            <h3 className="text-sm font-semibold text-slate-800">Địa chỉ</h3>
-
-                            <div className="mt-4 grid gap-3 sm:grid-cols-3">
-                                <TextField label="Tỉnh/Thành" placeholder="Chọn tỉnh / thành" />
-                                <TextField label="Phường/Xã" placeholder="Chọn phường / xã" />
-                                <TextField label="Địa chỉ cụ thể" placeholder="Nhập địa chỉ cụ thể" />
-                            </div>
-                        </div>
-
-                        <div className="rounded-2xl border border-slate-200 bg-white p-4">
-                            <h3 className="text-sm font-semibold text-slate-800">Giá</h3>
-
-                            <div className="mt-4 grid gap-3 sm:grid-cols-2">
-                                <TextField label="Giá thấp nhất" placeholder="0 VND" />
-                                <TextField label="Giá cao nhất" placeholder="50.000.000 VND" />
-                            </div>
-                        </div>
-
-                        <div className="rounded-2xl border border-slate-200 bg-white p-4">
-                            <h3 className="text-sm font-semibold text-slate-800">Chi tiết</h3>
-
-                            <div className="mt-4">
-                                <TextField label="Diện tích" placeholder="Nhập diện tích m²" />
-                            </div>
-                        </div>
-                    </div>
-                </section>
+                <PropertySearchForm />
 
                 <section className="space-y-5">
                     <div className="flex flex-wrap items-end justify-between gap-4">

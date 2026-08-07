@@ -7,6 +7,8 @@ export enum SearchOperator {
     Equals = 'equals',
     Contains = 'contains',
     In = 'in',
+    GreaterThanOrEqual = 'greater_than_or_equal',
+    LessThanOrEqual = 'less_than_or_equal',
 }
 
 export enum FilterLogics {
