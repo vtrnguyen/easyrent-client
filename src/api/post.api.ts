@@ -3,15 +3,20 @@ import { api } from '@/services/axios';
 import { PaginationResponse, SuccessResponse } from '@/types/api';
 import { Post, PostPayload } from '@/types/post';
 import { SearchRequest } from '@/types/search';
+import { createRequestKey, deduplicateRequest } from '@/services/request-deduplicator';
 
 export const postApi = {
     async search(payload: SearchRequest): Promise<PaginationResponse<Post>> {
-        const response = await api.post<SuccessResponse<PaginationResponse<Post>>>('/post/search', payload);
-        return toCamelCase(response.data.data) as PaginationResponse<Post>;
+        return deduplicateRequest(createRequestKey('post:search', payload), async () => {
+            const response = await api.post<SuccessResponse<PaginationResponse<Post>>>('/post/search', payload);
+            return toCamelCase(response.data.data) as PaginationResponse<Post>;
+        });
     },
     async getById(id: string): Promise<Post> {
-        const response = await api.get<SuccessResponse<Post>>(`/post/${id}`);
-        return toCamelCase(response.data.data) as Post;
+        return deduplicateRequest(`post:get:${id}`, async () => {
+            const response = await api.get<SuccessResponse<Post>>(`/post/${id}`);
+            return toCamelCase(response.data.data) as Post;
+        });
     },
     async create(payload: PostPayload): Promise<void> {
         await api.post('/post', payload);
