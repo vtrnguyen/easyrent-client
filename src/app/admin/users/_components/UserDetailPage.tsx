@@ -177,7 +177,7 @@ export default function UserDetailPage({ userId }: Props) {
                 </div>
 
                 <Card title="Thông tin tài khoản">
-                    <div className="grid grid-cols-2 gap-5">
+                    <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
                         <TextField label="Email" error={errors.email?.message} {...register('email')} />
 
                         <TextField
@@ -234,7 +234,7 @@ export default function UserDetailPage({ userId }: Props) {
                 </Card>
 
                 <Card title="Thông tin cá nhân">
-                    <div className="grid grid-cols-2 gap-5">
+                    <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
                         <TextField label="Họ và tên" error={errors.fullName?.message} {...register('fullName')} />
 
                         <Controller

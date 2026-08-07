@@ -121,7 +121,7 @@ export default function LocationPicker({
                     ))}
                 </div>
             )}
-            <div className="h-[420px] overflow-hidden rounded-xl border border-slate-200">
+            <div className="h-[300px] overflow-hidden rounded-xl border border-slate-200 sm:h-[420px]">
                 <MapContainer
                     center={position}
                     zoom={latitude && longitude ? 16 : 6}

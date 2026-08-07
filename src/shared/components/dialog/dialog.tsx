@@ -82,7 +82,7 @@ export default function Dialog({
 
     return createPortal(
         <div
-            className={`fixed inset-0 z-50 flex items-center justify-center p-4 transition-all duration-300 ${
+            className={`fixed inset-0 z-50 flex items-end justify-center p-2 transition-all duration-300 sm:items-center sm:p-4 ${
                 visible ? 'bg-black/50 opacity-100' : 'bg-black/0 opacity-0'
             } ${overlayClassName ?? ''}`}
             onClick={() => {
@@ -92,7 +92,7 @@ export default function Dialog({
             }}
         >
             <div
-                className={`w-full ${width} rounded-2xl bg-white shadow-xl transition-all duration-300 ease-out ${
+                className={`max-h-[calc(100dvh-1rem)] w-full overflow-y-auto ${width} rounded-2xl bg-white shadow-xl transition-all duration-300 ease-out sm:max-h-[calc(100dvh-2rem)] ${
                     visible ? 'translate-y-0 scale-100 opacity-100' : 'translate-y-4 scale-95 opacity-0'
                 } ${className ?? ''}`}
                 onClick={(e) => e.stopPropagation()}

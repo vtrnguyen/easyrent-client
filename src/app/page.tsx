@@ -122,14 +122,14 @@ export default function Home() {
                     <div className="grid gap-4 lg:grid-cols-[220px_minmax(0,1fr)]">
                         <Dropdown options={propertyTypeOptions} />
 
-                        <div className="flex items-center gap-3">
+                        <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
                             <TextField
                                 type="text"
                                 placeholder="Tìm kiếm khu vực, dự án, địa điểm..."
                                 containerClassName="w-full"
                                 leftIcon={<FaSearch />}
                             />
-                            <Button variant="blue" className="shrink-0">
+                            <Button variant="blue" className="w-full shrink-0 sm:w-auto">
                                 Tìm kiếm
                             </Button>
                         </div>
@@ -166,7 +166,7 @@ export default function Home() {
                 </section>
 
                 <section className="space-y-5">
-                    <div className="flex items-end justify-between gap-4">
+                    <div className="flex flex-wrap items-end justify-between gap-4">
                         <div>
                             <p className="text-sm font-semibold tracking-[0.18em] text-slate-500 uppercase">
                                 Nơi ở dành cho bạn

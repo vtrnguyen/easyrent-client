@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -10,9 +10,11 @@ import { SidebarMenu } from '@/types/sidebar';
 
 interface SidebarProps {
     menus: SidebarMenu[];
+    open?: boolean;
+    onClose?: () => void;
 }
 
-export default function Sidebar({ menus }: SidebarProps) {
+export default function Sidebar({ menus, open = false, onClose }: SidebarProps) {
     const pathname = usePathname();
 
     const activeDestination = useMemo(() => {
@@ -47,6 +49,17 @@ export default function Sidebar({ menus }: SidebarProps) {
 
     const [openMenus, setOpenMenus] = useState<string[]>([]);
 
+    useEffect(() => {
+        onClose?.();
+    }, [pathname, onClose]);
+
+    useEffect(() => {
+        if (!open) return;
+        const handleKeyDown = (event: KeyboardEvent) => event.key === 'Escape' && onClose?.();
+        document.addEventListener('keydown', handleKeyDown);
+        return () => document.removeEventListener('keydown', handleKeyDown);
+    }, [open, onClose]);
+
     const toggleMenu = (menuText: string) => {
         setOpenMenus((prev) =>
             prev.includes(menuText) ? prev.filter((item) => item !== menuText) : [...prev, menuText],
@@ -54,90 +67,104 @@ export default function Sidebar({ menus }: SidebarProps) {
     };
 
     return (
-        <aside className="flex h-full w-64 flex-col border-r border-slate-200 bg-white">
-            <nav className="flex-1 overflow-y-auto p-3">
-                <div className="space-y-1">
-                    {menus.map((menu) => {
-                        const MenuIcon = menu.icon;
+        <>
+            <button
+                type="button"
+                aria-label="Đóng menu điều hướng"
+                onClick={onClose}
+                className={`fixed inset-0 z-40 bg-slate-950/40 transition-opacity lg:hidden ${
+                    open ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-0'
+                }`}
+            />
+            <aside
+                className={`fixed inset-y-0 left-0 z-50 flex h-dvh w-[min(16rem,85vw)] flex-col border-r border-slate-200 bg-white shadow-xl transition-transform duration-200 lg:static lg:z-auto lg:h-full lg:w-64 lg:shrink-0 lg:translate-x-0 lg:shadow-none ${open ? 'translate-x-0' : '-translate-x-full'}`}
+            >
+                <nav className="flex-1 overflow-y-auto p-3">
+                    <div className="space-y-1">
+                        {menus.map((menu) => {
+                            const MenuIcon = menu.icon;
 
-                        if ('destination' in menu) {
-                            const active = isActive(menu.destination);
+                            if ('destination' in menu) {
+                                const active = isActive(menu.destination);
+
+                                return (
+                                    <Link
+                                        key={menu.text}
+                                        href={menu.destination}
+                                        className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition ${
+                                            active ? 'bg-blue-50 text-blue-600' : 'text-slate-700 hover:bg-slate-100'
+                                        }`}
+                                    >
+                                        <MenuIcon className="h-5 w-5 shrink-0" />
+
+                                        <span className="flex-1">{menu.text}</span>
+                                    </Link>
+                                );
+                            }
+
+                            const hasActiveSubmenu = menu.submenu.some((submenu) => isActive(submenu.destination));
+
+                            const isOpen =
+                                hasActiveSubmenu ||
+                                defaultOpenMenus.includes(menu.text) ||
+                                openMenus.includes(menu.text);
 
                             return (
-                                <Link
-                                    key={menu.text}
-                                    href={menu.destination}
-                                    className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition ${
-                                        active ? 'bg-blue-50 text-blue-600' : 'text-slate-700 hover:bg-slate-100'
-                                    }`}
-                                >
-                                    <MenuIcon className="h-5 w-5 shrink-0" />
-
-                                    <span className="flex-1">{menu.text}</span>
-                                </Link>
-                            );
-                        }
-
-                        const hasActiveSubmenu = menu.submenu.some((submenu) => isActive(submenu.destination));
-
-                        const isOpen =
-                            hasActiveSubmenu || defaultOpenMenus.includes(menu.text) || openMenus.includes(menu.text);
-
-                        return (
-                            <div key={menu.text}>
-                                <button
-                                    type="button"
-                                    onClick={() => toggleMenu(menu.text)}
-                                    className={`flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-left text-sm font-medium transition ${
-                                        hasActiveSubmenu
-                                            ? 'bg-blue-50 text-blue-600'
-                                            : 'text-slate-700 hover:bg-slate-100'
-                                    }`}
-                                >
-                                    <MenuIcon className="h-5 w-5 shrink-0" />
-
-                                    <span className="flex-1">{menu.text}</span>
-
-                                    <FiChevronDown
-                                        className={`h-4 w-4 transition-transform duration-200 ${
-                                            isOpen ? 'rotate-180' : ''
+                                <div key={menu.text}>
+                                    <button
+                                        type="button"
+                                        onClick={() => toggleMenu(menu.text)}
+                                        className={`flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-left text-sm font-medium transition ${
+                                            hasActiveSubmenu
+                                                ? 'bg-blue-50 text-blue-600'
+                                                : 'text-slate-700 hover:bg-slate-100'
                                         }`}
-                                    />
-                                </button>
+                                    >
+                                        <MenuIcon className="h-5 w-5 shrink-0" />
 
-                                <div
-                                    className={`overflow-hidden transition-all duration-300 ${
-                                        isOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
-                                    }`}
-                                >
-                                    <div className="mt-1 ml-5 space-y-1 border-l border-slate-200 pl-3">
-                                        {menu.submenu.map((submenu) => {
-                                            const SubmenuIcon = submenu.icon;
-                                            const submenuActive = isActive(submenu.destination);
+                                        <span className="flex-1">{menu.text}</span>
 
-                                            return (
-                                                <Link
-                                                    key={submenu.text}
-                                                    href={submenu.destination}
-                                                    className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition ${
-                                                        submenuActive
-                                                            ? 'bg-blue-50 font-medium text-blue-600'
-                                                            : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
-                                                    }`}
-                                                >
-                                                    <SubmenuIcon className="h-4 w-4 shrink-0" />
+                                        <FiChevronDown
+                                            className={`h-4 w-4 transition-transform duration-200 ${
+                                                isOpen ? 'rotate-180' : ''
+                                            }`}
+                                        />
+                                    </button>
 
-                                                    <span>{submenu.text}</span>
-                                                </Link>
-                                            );
-                                        })}
+                                    <div
+                                        className={`overflow-hidden transition-all duration-300 ${
+                                            isOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+                                        }`}
+                                    >
+                                        <div className="mt-1 ml-5 space-y-1 border-l border-slate-200 pl-3">
+                                            {menu.submenu.map((submenu) => {
+                                                const SubmenuIcon = submenu.icon;
+                                                const submenuActive = isActive(submenu.destination);
+
+                                                return (
+                                                    <Link
+                                                        key={submenu.text}
+                                                        href={submenu.destination}
+                                                        className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition ${
+                                                            submenuActive
+                                                                ? 'bg-blue-50 font-medium text-blue-600'
+                                                                : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
+                                                        }`}
+                                                    >
+                                                        <SubmenuIcon className="h-4 w-4 shrink-0" />
+
+                                                        <span>{submenu.text}</span>
+                                                    </Link>
+                                                );
+                                            })}
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        );
-                    })}
-                </div>
-            </nav>
-        </aside>
+                            );
+                        })}
+                    </div>
+                </nav>
+            </aside>
+        </>
     );
 }

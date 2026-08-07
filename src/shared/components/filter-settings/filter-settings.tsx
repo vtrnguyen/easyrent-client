@@ -208,9 +208,14 @@ export default function FilterSettings({
     const pendingConfig = filters.find((filter) => filter.key === pendingFilter?.filterKey);
 
     return (
-        <Dialog open={open} onClose={onClose} width="max-w-4xl" contentClassName="flex h-[600px] max-h-[80vh] flex-col">
+        <Dialog
+            open={open}
+            onClose={onClose}
+            width="max-w-4xl"
+            contentClassName="flex h-[min(600px,calc(100dvh-1rem))] flex-col sm:max-h-[80vh]"
+        >
             <div className="flex h-full flex-col">
-                <div className="flex items-center justify-between border-b border-slate-200 p-6">
+                <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-200 p-4 sm:p-6">
                     <h2 className="text-lg font-semibold">Bộ lọc tìm kiếm</h2>
 
                     <Button icon={<MdClear />} variant="secondary" onClick={handleClear}>
@@ -218,8 +223,8 @@ export default function FilterSettings({
                     </Button>
                 </div>
 
-                <div className="flex-1 overflow-y-auto p-6">
-                    <div className="mb-6 flex items-center gap-6">
+                <div className="flex-1 overflow-y-auto p-4 sm:p-6">
+                    <div className="mb-6 flex flex-wrap items-center gap-4 sm:gap-6">
                         <span className="text-sm font-medium text-slate-700">Điều kiện:</span>
 
                         <label className="flex cursor-pointer items-center gap-2">
@@ -258,7 +263,7 @@ export default function FilterSettings({
                             }
 
                             return (
-                                <div key={item.id} className="flex items-end gap-3">
+                                <div key={item.id} className="flex items-end gap-2 sm:gap-3">
                                     <div className="flex-1">
                                         {renderFilterInput(filter, item, (value) => updateActiveValue(item.id, value))}
                                     </div>
@@ -273,7 +278,7 @@ export default function FilterSettings({
                             );
                         })}
 
-                        <div className="flex items-end gap-3">
+                        <div className="flex items-end gap-2 sm:gap-3">
                             <div className="flex-1">
                                 {!pendingFilter ? (
                                     <Dropdown
@@ -301,7 +306,7 @@ export default function FilterSettings({
                     </div>
                 </div>
 
-                <div className="flex justify-center gap-3 border-t border-slate-200 p-6">
+                <div className="flex flex-wrap justify-center gap-3 border-t border-slate-200 p-4 sm:p-6">
                     <Button variant="secondary" onClick={onClose}>
                         Hủy
                     </Button>

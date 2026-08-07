@@ -15,11 +15,11 @@ export default function TenantLayout({ children }: TenantLayoutProps) {
             <div className="flex min-h-screen flex-col bg-[#f7f5f2] text-slate-900">
                 <TenantHeader />
 
-                <main className="flex-1 px-4 py-6 sm:px-6 lg:px-10">{children}</main>
+                <main className="min-w-0 flex-1 px-4 py-5 sm:px-6 sm:py-6 lg:px-10">{children}</main>
 
                 <footer className="border-t border-slate-200 bg-white">
                     <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-10">
-                        <div className="grid gap-8 lg:grid-cols-[1.2fr_0.9fr_0.9fr_1.1fr]">
+                        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-[1.2fr_0.9fr_0.9fr_1.1fr]">
                             <div className="space-y-4">
                                 <div className="space-y-1">
                                     <p className="text-lg font-semibold text-slate-900">EasyRent</p>
@@ -62,11 +62,11 @@ export default function TenantLayout({ children }: TenantLayoutProps) {
                                     Đăng ký nhận tin
                                 </h3>
 
-                                <div className="flex overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+                                <div className="flex min-w-0 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
                                     <input
                                         type="email"
                                         placeholder="Nhập email của bạn"
-                                        className="h-12 flex-1 px-4 text-sm outline-none placeholder:text-slate-400"
+                                        className="h-12 min-w-0 flex-1 px-4 text-sm outline-none placeholder:text-slate-400"
                                     />
                                     <button
                                         type="button"

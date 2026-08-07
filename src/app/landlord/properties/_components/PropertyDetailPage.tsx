@@ -503,7 +503,7 @@ export default function PropertyDetailPage({ propertyId }: Props) {
                             {existingImages.length === 0 ? (
                                 <p className="text-sm text-slate-500">Chưa có ảnh.</p>
                             ) : (
-                                <div className="grid grid-cols-2 gap-3 md:grid-cols-3 xl:grid-cols-4">
+                                <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
                                     {existingImages.map((image, index) => (
                                         <div
                                             key={image.id}
@@ -545,7 +545,7 @@ export default function PropertyDetailPage({ propertyId }: Props) {
                             <div className="space-y-3">
                                 <p className="text-xs text-slate-500">Đã chọn {selectedImages.length} file ảnh mới.</p>
 
-                                <div className="grid grid-cols-2 gap-3 md:grid-cols-3 xl:grid-cols-4">
+                                <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
                                     {selectedImagePreviews.map((item) => (
                                         <div
                                             key={item.url}

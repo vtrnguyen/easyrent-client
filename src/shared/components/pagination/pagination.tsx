@@ -38,7 +38,7 @@ export default function Pagination({
     };
 
     return (
-        <div className="flex flex-col gap-4 bg-white px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex flex-col gap-4 px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
             <div className="text-sm text-slate-600">
                 Hiển thị {'('}
                 <span className="text-slate-900">{startRecord}</span>
@@ -50,7 +50,7 @@ export default function Pagination({
                 {' bản ghi'}
             </div>
 
-            <div className="flex items-center gap-3">
+            <div className="flex flex-wrap items-center gap-2 sm:gap-3">
                 <Button
                     variant="secondary"
                     size="sm"

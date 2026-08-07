@@ -100,7 +100,7 @@ export default function Table<T>({
     return (
         <div className="overflow-hidden rounded-sm border border-slate-200 bg-white">
             <div className="overflow-x-auto">
-                <table className="w-full border-collapse">
+                <table className="w-full min-w-[720px] border-collapse">
                     <thead className="bg-sky-100">
                         <tr>
                             {selectable && (
