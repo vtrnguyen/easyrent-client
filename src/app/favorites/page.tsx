@@ -72,7 +72,7 @@ export default function FavoritesPage() {
                                         type="button"
                                         aria-label="Bỏ yêu thích"
                                         onClick={() => void toggle(post.id)}
-                                        className="text-rose-500"
+                                        className="cursor-pointer text-rose-500 hover:text-rose-600 focus:ring-2 focus:ring-rose-500 focus:ring-offset-2 focus:outline-none"
                                     >
                                         <FiHeart className="h-5 w-5 fill-current" />
                                     </button>
